@@ -15,12 +15,12 @@ $(DATA_DIR_PROCESSED)/acs5_2018_race_tracts.csv: | $(DATA_DIR_PROCESSED)
 # County boundaries
 
 $(DATA_DIR_PROCESSED)/counties_2018.geojson: | $(DATA_DIR_PROCESSED)
-	censusdatadownloader --data-dir $(DATA_DIR) --year 2018 counties
+	censusmapdownloader --data-dir $(DATA_DIR) counties
 
 # Tract boundaries
 
 $(DATA_DIR_PROCESSED)/tracts_2010.geojson: | $(DATA_DIR_PROCESSED)
-	censusdatadownloader --data-dir $(DATA_DIR) --year 2010 tracts
+	censusmapdownloader --data-dir $(DATA_DIR) tracts
 
 # Create directories for data
 
