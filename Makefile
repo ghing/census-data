@@ -8,6 +8,10 @@ DATA_DIR_PUBLIC :=  $(DATA_DIR)/public
 
 SHARED_DATA :=
 
+# Table B03002: Hispanic or Latino Origin by Race
+$(DATA_DIR_PROCESSED)/acs5_2018_race_tracts.csv: | $(DATA_DIR_PROCESSED)
+	censusdatadownloader --data-dir $(DATA_DIR) --year 2018 race tracts
+
 # County boundaries
 
 $(DATA_DIR_PROCESSED)/counties_2018.geojson: | $(DATA_DIR_PROCESSED)
