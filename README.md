@@ -22,6 +22,11 @@ Reproducibly create a repository of frequently-used census data.
 
 ### Data sources
 
+- Census Gazeteer Files
+  - URL: https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.html
+  - Agency: U.S. Census Bureau
+  - The U.S. Gazetteer Files provide a listing of all geographic areas for selected geographic area types. The files include geographic identifier codes, names, area measurements, and representative latitude and longitude coordinates. The representative coordinates are an "internal point" that, unlike a centroid, is gauranteed to be inside the geometry.
+
 ## Technical
 
 *TK: Instructions on how to bootstrap project, run ETL processes, etc.*
