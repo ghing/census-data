@@ -1,0 +1,18 @@
+"""Core functionality"""
+
+from census import Census
+
+from census_data.pep import IntPopulationClient, PepClient
+
+
+# pylint: disable=too-few-public-methods
+class AugmentedCensus(Census):
+    """
+    API wrapper client interface with added population estimate support.
+    """
+
+    def __init__(self, key, year=None, session=None):
+        super().__init__(key, year=year, session=session)
+
+        self.int_population = IntPopulationClient(key, year, session)
+        self.pep = PepClient(key, year, session)

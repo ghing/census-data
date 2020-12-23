@@ -14,11 +14,7 @@ Reproducibly create a repository of frequently-used census data.
 
 ### Staff involved
 
-*TK: List people & contact info for people involved in the project*
-
-[Responsibility matrix](url-to-responsibility matrix)
-
-[HIRUFF Q&A](url-to-hiruff)
+- Geoff Hing <ghing@apmreports.org>: Develop and maintain this project
 
 ### Data sources
 
@@ -27,23 +23,28 @@ Reproducibly create a repository of frequently-used census data.
   - Agency: U.S. Census Bureau
   - The U.S. Gazetteer Files provide a listing of all geographic areas for selected geographic area types. The files include geographic identifier codes, names, area measurements, and representative latitude and longitude coordinates. The representative coordinates are an "internal point" that, unlike a centroid, is gauranteed to be inside the geometry.
 
-## Technical
+- Population Estimates
+  - URL: https://www.census.gov/data/developers/data-sets/popest-popproj/popest.html
+  - See `~/workspace/apm_reports/covid-19-public-health/covid19_public_health/census.py`
 
-*TK: Instructions on how to bootstrap project, run ETL processes, etc.*
+- American Community Survey
+
+## Technical
 
 ### Assumptions
 
+- Python 3.6+ (I developed this with 3.9)
+- Pipenv
 - [datadesk/census-data-downloader](https://github.com/datadesk/census-data-downloader/)
+- GNU Make
 
 ### Project setup instructions
 
-After cloning the git repo:
+After cloning the git repo, and changing directory to the project directory, install the Python dependencies:
 
-`datakit data pull` to rerieve the data files.
-
-Open `census-data.Rproj` in RStudio.
-
-*TK: For more complex or unusual projects additional directions follow*
+```
+pipenv install
+```
 
 ## Data notes
 

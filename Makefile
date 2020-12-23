@@ -14,6 +14,11 @@ SHARED_DATA :=
 $(DATA_DIR_PROCESSED)/acs5_2018_race_tracts.csv: | $(DATA_DIR_PROCESSED)
 	censusdatadownloader --data-dir $(DATA_DIR) --year 2018 race tracts
 
+# Population estimates
+
+$(DATA_DIR_PROCESSED)/pep_2019_population_counties.csv: | $(DATA_DIR_PROCESSED)
+	pipenv run downloadpep --data-dir $(DATA_DIR) --year 2019 population counties
+
 # Boundaries
 
 # County boundaries

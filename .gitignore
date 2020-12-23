@@ -14,3 +14,6 @@ data/
 
 scratch/
 !scratch/.gitkeep
+
+build
+*.egg-info
