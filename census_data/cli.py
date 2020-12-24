@@ -20,20 +20,22 @@ def download_pep(raw_geotype, year, raw_csv_path):
 
     if year >= 2010:
         pop_resp = census.pep.get(
-            ('NAME', 'POP',),
-            {'for': f'{raw_geotype}:*'},
-            year=year
+            (
+                "NAME",
+                "POP",
+            ),
+            {"for": f"{raw_geotype}:*"},
+            year=year,
         )
     else:
         pop_resp = census.int_population.get(
-            ('GEONAME', 'POP'),
-            {'for': f'{raw_geotype}:*'},
-            year=year
+            ("GEONAME", "POP"), {"for": f"{raw_geotype}:*"}, year=year
         )
 
     data = pd.DataFrame(pop_resp)
 
     data.to_csv(raw_csv_path, index=False, encoding="utf-8")
+
 
 def process_pep(raw_geotype, year, raw_csv_path, processed_csv_path):
     """Process population estimates"""
@@ -66,41 +68,32 @@ def process_pep(raw_geotype, year, raw_csv_path, processed_csv_path):
             # 7/1/2010 population estimate.
             [lambda df: df["DATE_CODE"] >= 3]
             .copy()
-            .assign(
-                DATE_CODE=lambda df: df["DATE_CODE"].map(date_code_map)
+            .assign(DATE_CODE=lambda df: df["DATE_CODE"].map(date_code_map))
+            .rename(
+                columns={
+                    "NAME": "name",
+                    "POP": "population",
+                    "DATE_CODE": "estimate_date",
+                }
             )
-            .rename(columns={
-                'NAME': 'name',
-                'POP': 'population',
-                'DATE_CODE': "estimate_date",
-            })
         )
     else:
-        data = (
-            data
-            .drop(columns=['DATE_', 'state'])\
-            .rename(columns={'GEONAME': 'state', 'POP': 'population'})\
+        data = data.drop(columns=["DATE_", "state"]).rename(
+            columns={"GEONAME": "state", "POP": "population"}
         )
 
     data.to_csv(processed_csv_path, index=False, encoding="utf-8")
 
-@click.argument(
-    "geotype",
-    nargs=1,
-    required=True
-)
+
+@click.argument("geotype", nargs=1, required=True)
 # Provide a table argument to make the API the same as census-data-downloader,
 # but right now, we only support the population table.
-@click.argument(
-    "table",
-    nargs=1,
-    required=True
-)
+@click.argument("table", nargs=1, required=True)
 @click.option(
     "--data-dir",
     nargs=1,
     default="./",
-    help="The folder where you want to download the data"
+    help="The folder where you want to download the data",
 )
 @click.option(
     "--year",
@@ -110,13 +103,9 @@ def process_pep(raw_geotype, year, raw_csv_path, processed_csv_path):
         "The years of data to download. By default it gets only the latest year. "
         "Not all data are available for every year. Submit 'all' to get every "
         "year."
-    )
+    ),
 )
-@click.option(
-    '--force',
-    is_flag=True,
-    help="Force the downloading of the data"
-)
+@click.option("--force", is_flag=True, help="Force the downloading of the data")
 @click.command()
 def download_pep_cmd(table, geotype, data_dir="./", year=None, force=False):
     """Download population estimates"""

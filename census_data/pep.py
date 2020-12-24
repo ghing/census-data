@@ -74,7 +74,8 @@ class PepClientBase(Client):
     Base class for API wrappers for population estimates.
 
     """
-    date_code_field = 'DATE_CODE'
+
+    date_code_field = "DATE_CODE"
     default_vintage = None
     dataset = None
 
@@ -93,17 +94,17 @@ class PepClientBase(Client):
 
         if flat:
 
-            for key, elem in obj['variables'].items():
-                if key in ['for', 'in']:
+            for key, elem in obj["variables"].items():
+                if key in ["for", "in"]:
                     continue
-                data[key] = "{}: {}".format(elem['concept'], elem['label'])
+                data[key] = "{}: {}".format(elem["concept"], elem["label"])
 
         else:
 
-            data = obj['variables']
-            if 'for' in data:
+            data = obj["variables"]
+            if "for" in data:
                 data.pop("for", None)
-            if 'in' in data:
+            if "in" in data:
                 data.pop("in", None)
 
         return data
@@ -118,18 +119,20 @@ class PepClientBase(Client):
         resp = self.session.get(tables_url)
 
         # Pass it out
-        return resp.json()['groups']
+        return resp.json()["groups"]
 
     @lru_cache(maxsize=1024)
     def _field_type(self, field, year):
         url = self.definition_url % (self.default_vintage, self.dataset, field)
         resp = self.session.get(url)
 
-        types = {"fips-for" : str,
-                 "fips-in" : str,
-                 "int" : float_or_str,
-                 "float": float,
-                 "string": str}
+        types = {
+            "fips-for": str,
+            "fips-in": str,
+            "int": float_or_str,
+            "float": float,
+            "string": str,
+        }
 
         if resp.status_code == 200:
             predicate_type = resp.json().get("predicateType", "string")
@@ -149,16 +152,18 @@ class PepClientBase(Client):
         url = self.endpoint_url % (self.default_vintage, self.dataset)
 
         params = {
-            'get': ",".join(fields),
-            'for': geo['for'],
-            'key': self._key,
+            "get": ",".join(fields),
+            "for": geo["for"],
+            "key": self._key,
         }
 
         if year is not None:
-            params[self.date_code_field] = date_for_year(year, base_year=year - (year % 10))
+            params[self.date_code_field] = date_for_year(
+                year, base_year=year - (year % 10)
+            )
 
-        if 'in' in geo:
-            params['in'] = geo['in']
+        if "in" in geo:
+            params["in"] = geo["in"]
 
         resp = self.session.get(url, params=params)
 
@@ -166,17 +171,20 @@ class PepClientBase(Client):
             try:
                 data = resp.json()
             except ValueError as ex:
-                if '<title>Invalid Key</title>' in resp.text:
-                    raise APIKeyError(' '.join(resp.text.splitlines())) from ex
+                if "<title>Invalid Key</title>" in resp.text:
+                    raise APIKeyError(" ".join(resp.text.splitlines())) from ex
 
                 raise ex
 
             headers = data.pop(0)
             types = [self._field_type(header, year) for header in headers]
-            results = [{header : (cast(item) if item is not None else None)
-                        for header, cast, item
-                        in zip(headers, types, d)}
-                       for d in data]
+            results = [
+                {
+                    header: (cast(item) if item is not None else None)
+                    for header, cast, item in zip(headers, types, d)
+                }
+                for d in data
+            ]
             return results
 
         if resp.status_code == 204:
@@ -194,11 +202,23 @@ class IntPopulationClient(PepClientBase):
     """
 
     default_vintage = 2000
-    date_code_field = 'DATE_'
+    date_code_field = "DATE_"
     default_year = 2000
-    dataset = 'pep/int_population'
+    dataset = "pep/int_population"
 
-    years = (2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,)
+    years = (
+        2000,
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+    )
 
 
 # pylint: disable=too-few-public-methods
@@ -217,14 +237,24 @@ class PepClient(PepClientBase):
 
     default_vintage = 2019
     default_year = 2019
-    dataset = 'pep/population'
+    dataset = "pep/population"
 
-    years = (2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019,)
-
+    years = (
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+    )
 
     @lru_cache(maxsize=1024)
     def _field_type(self, field, year):
-        if field == 'POP':
+        if field == "POP":
             # For some reason
             # https://api.census.gov/data/2019/pep/population/variables/POP.json
             # doesn't include a data type.
