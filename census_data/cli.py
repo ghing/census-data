@@ -37,6 +37,9 @@ def download_pep(raw_geotype, year, raw_csv_path):
     data.to_csv(raw_csv_path, index=False, encoding="utf-8")
 
 
+# Accept a raw_geotype argument to provide a consistent API with the download
+# phase, but we don't need to use that variable in this function.
+# pylint: disable=unused-argument
 def process_pep(raw_geotype, year, raw_csv_path, processed_csv_path):
     """Process population estimates"""
     data = pd.read_csv(raw_csv_path)
@@ -109,6 +112,9 @@ def process_pep(raw_geotype, year, raw_csv_path, processed_csv_path):
 @click.command()
 def download_pep_cmd(table, geotype, data_dir="./", year=None, force=False):
     """Download population estimates"""
+    # TODO: Support other tables.
+    if table != "population":
+        raise click.ClickException("Currently only the population table is supported")
     # TODO: Move some of this logic into a class, similar to
     # https://github.com/datadesk/census-data-downloader/blob/master/census_data_downloader/core/geotypes.py
     if geotype not in ("counties",):
