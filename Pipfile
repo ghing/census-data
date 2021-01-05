@@ -14,6 +14,7 @@ numpy = "*"
 census = "*"
 click = "*"
 census-data = {editable = true, path = "."}
+census-data-downloader = "*"
 
 [requires]
 python_version = "3.9"

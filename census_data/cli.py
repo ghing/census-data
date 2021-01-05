@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 Command-line interface
 """
@@ -5,13 +6,18 @@ import itertools
 import os
 from pathlib import Path
 
+# We'll use some of the field name crosswalks from this package in our code.
+from census import Census
+from census_data_downloader.tables import TABLE_LIST
 import click
 import pandas as pd
 
 from census_data.core import AugmentedCensus
+from census_data.core.geotypes import BlockGroupsDownloader
 
 
 CENSUS_API_KEY = os.environ.get("CENSUS_API_KEY")
+TABLES_LOOKUP = dict((k.PROCESSED_TABLE_NAME, k) for k in TABLE_LIST)
 
 
 def download_pep(raw_geotype, year, raw_csv_path):
@@ -142,3 +148,38 @@ def download_pep_cmd(table, geotype, data_dir="./", year=None, force=False):
 
     if not processed_csv_path.exists() or force:
         process_pep(raw_geotype, year, raw_csv_path, processed_csv_path)
+
+
+@click.argument("table", nargs=1, required=True)
+@click.option(
+    "--data-dir",
+    nargs=1,
+    default="./",
+    help="The folder where you want to download the data",
+)
+@click.option(
+    "--year",
+    default=None,
+    type=int,
+    help=(
+        "The years of data to download. By default it gets only the latest year. "
+        "Not all data are available for every year. Submit 'all' to get every year."
+    ),
+)
+@click.option("--force", is_flag=True, help="Force the downloading of the data")
+def download_acs5_blockgroup(table, data_dir="./", year=None, force=False):
+    """
+    Download ACS 5-year estimates for block groups
+
+    This functionality is not supported by the `census-data-downloader` tool.
+
+    """
+    # HACK: Use some clases from `census_data_downlaoder` to get the list of
+    # fields we'll request from the API.
+    table_config_klass = TABLES_LOOKUP[table]
+    table_config = table_config_klass(years=[year], data_dir=data_dir, force=force)
+    # HACK: Add blockgroups to the supported geotype list
+    table_config.GEOTYPE_LIST = list(table_config.GEOTYPE_LIST) + ["blockgroups"]
+    downloader = BlockGroupsDownloader(table_config, year)
+    downloader.download()
+    downloader.process()
