@@ -20,6 +20,12 @@ CENSUS_API_KEY = os.environ.get("CENSUS_API_KEY")
 TABLES_LOOKUP = dict((k.PROCESSED_TABLE_NAME, k) for k in TABLE_LIST)
 
 
+# TODO: Replace this with a class-based approach to integrate all API-based
+# downloads into a single command-line tool, similar to the one provided by
+# `census-data-downloader`. This could ultimately enable pushing this
+# functionality upstream to that package.
+#
+# See https://github.com/datadesk/census-data-downloader/blob/master/census_data_downloader/core/geotypes.py
 def download_pep(raw_geotype, year, raw_csv_path):
     """Download population estimates"""
     census = AugmentedCensus(CENSUS_API_KEY)
@@ -121,13 +127,16 @@ def download_pep_cmd(table, geotype, data_dir="./", year=None, force=False):
     # TODO: Support other tables.
     if table != "population":
         raise click.ClickException("Currently only the population table is supported")
-    # TODO: Move some of this logic into a class, similar to
-    # https://github.com/datadesk/census-data-downloader/blob/master/census_data_downloader/core/geotypes.py
-    if geotype not in ("counties",):
+
+    if geotype == "counties":
+        raw_geotype = "county"
+
+    elif geotype == "states":
+        raw_geotype = "state"
+
+    else:
         # TODO: Support other geographies.
         raise click.ClickException(f"geotype '{geotype}' is not supported")
-
-    raw_geotype = "county"
 
     year_list = list(itertools.chain(range(2008, 2020)))
     if year is None:
