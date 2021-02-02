@@ -70,6 +70,12 @@ Download racial demographics (technically [Table B03002](https://censusreporter.
 make data/processed/acs5_2018_race_tracts.csv
 ```
 
+and by block group:
+
+```
+make data/processed/acs5_2018_race_blockgroups.csv
+```
+
 ### Gazeteer files
 
 Download county gazeteer files:
@@ -110,6 +116,12 @@ Download county population estimates:
 
 ```
 make data/processed/pep_2019_population_counties.csv
+```
+
+Download state population estimates:
+
+```
+make data/processed/pep_2019_population_states.csv
 ```
 
 ## Data notes
