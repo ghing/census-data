@@ -8,49 +8,14 @@ DATA_DIR_PUBLIC :=  $(DATA_DIR)/public
 
 SHARED_DATA :=
 
-# ACS 5-year
-
-# Table B03002: Hispanic or Latino Origin by Race, tracts
-$(DATA_DIR_PROCESSED)/acs5_2018_race_tracts.csv: | $(DATA_DIR_PROCESSED)
-	censusdatadownloader --data-dir $(DATA_DIR) --year 2018 race tracts
-
-# Table B03002: Hispanic or Latino Origin by Race, block groups 
-$(DATA_DIR_PROCESSED)/acs5_2018_race_blockgroups.csv: | $(DATA_DIR_PROCESSED)
-	downloadacs5bg --data-dir $(DATA_DIR) --year 2018 race
-
-# Population estimates
-
-$(DATA_DIR_PROCESSED)/pep_2019_population_states.csv: | $(DATA_DIR_PROCESSED)
-	pipenv run downloadpep --data-dir $(DATA_DIR) --year 2019 population states 
-
-$(DATA_DIR_PROCESSED)/pep_2019_population_counties.csv: | $(DATA_DIR_PROCESSED)
-	pipenv run downloadpep --data-dir $(DATA_DIR) --year 2019 population counties
-
-# Boundaries
-
-# County boundaries
-
-$(DATA_DIR_PROCESSED)/counties_2018.geojson: | $(DATA_DIR_PROCESSED)
-	censusmapdownloader --data-dir $(DATA_DIR) counties
-
-# Tract boundaries
-
-$(DATA_DIR_PROCESSED)/tracts_2010.geojson: | $(DATA_DIR_PROCESSED)
-	censusmapdownloader --data-dir $(DATA_DIR) tracts
-
-# Gazetteer files
-
-# National Counties Gazetteer File
-$(DATA_DIR_SRC)/2019_Gaz_counties_national.zip: | $(DATA_DIR_SRC)
-	wget -O $@ https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2019_Gazetteer/2019_Gaz_counties_national.zip
-
-# National County Subdivisions Gazetteer File
-$(DATA_DIR_SRC)/2019_Gaz_cousubs_national.zip: | $(DATA_DIR_SRC)
-	wget -O $@ https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2019_Gazetteer/2019_Gaz_cousubs_national.zip
-
-# National Places Gazetteer File
-$(DATA_DIR_SRC)/2019_Gaz_place_national.zip: | $(DATA_DIR_SRC)
-	wget -O $@ https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2019_Gazetteer/2019_Gaz_place_national.zip
+# Rules to download different types of data are broken out into individual
+# makefiles.
+# I roughly try to follow the topic areas from Census Reporter:
+# https://censusreporter.org/topics/
+include etl/race.mk
+include etl/popest.mk
+include etl/boundaries.mk
+include etl/gazetteer.mk
 
 # Create directories for data
 
