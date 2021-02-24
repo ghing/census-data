@@ -76,6 +76,12 @@ and by block group:
 make data/processed/acs5_2018_race_blockgroups.csv
 ```
 
+Download Table B10063: Households With Grandparents Living With Own Grandchildren by Responsibility for Own Grandchildren and Presence of Parent of Grandchildren by ZCTA:
+
+```
+make data/processed/acs5_2019_grandparentslivingwithgrandchildren_zctas.csv
+```
+
 ### Gazeteer files
 
 Download county gazeteer files:

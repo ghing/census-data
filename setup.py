@@ -21,11 +21,13 @@ setup(
         "pandas",
         "census",
         "click",
+        "census-data-downloader",
     ),
     entry_points="""
         [console_scripts]
         downloadpep=census_data.cli:download_pep_cmd
         downloadacs5bg=census_data.cli:download_acs5_blockgroup
+        mycensusdatadownloader=census_data.cli:cmd
     """,
     classifiers=[
         "Development Status :: 5 - Production/Stable",

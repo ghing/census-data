@@ -16,6 +16,7 @@ include etl/race.mk
 include etl/popest.mk
 include etl/boundaries.mk
 include etl/gazetteer.mk
+include etl/seniors.mk
 
 # Create directories for data
 
