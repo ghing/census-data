@@ -9,3 +9,7 @@ $(DATA_DIR_PROCESSED)/counties_2018.geojson: | $(DATA_DIR_PROCESSED)
 
 $(DATA_DIR_PROCESSED)/tracts_2010.geojson: | $(DATA_DIR_PROCESSED)
 	censusmapdownloader --data-dir $(DATA_DIR) tracts
+
+# ZCTA boundaries
+$(DATA_DIR_PROCESSED)/zctas_2010.geojson: | $(DATA_DIR_PROCESSED)
+	censusmapdownloader --data-dir $(DATA_DIR) zctas
