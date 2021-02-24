@@ -76,6 +76,12 @@ and by block group:
 make data/processed/acs5_2018_race_blockgroups.csv
 ```
 
+and by ZIP code tabulation area (ZCTA):
+
+```
+make data/processed/acs5_2019_race_zctas.csv
+```
+
 Download Table B10063: Households With Grandparents Living With Own Grandchildren by Responsibility for Own Grandchildren and Presence of Parent of Grandchildren by ZCTA:
 
 ```
