@@ -116,6 +116,12 @@ Download county boundaries:
 make data/processed/counties_2018.geojson
 ```
 
+Download metropolitan/micropolitan statistical area (CBSA) boundaries:
+
+```
+make data/processed/cbsas_2020.geojson
+```
+
 Download tract boundaries:
 
 ```

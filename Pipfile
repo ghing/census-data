@@ -15,6 +15,7 @@ census = "*"
 click = "*"
 census-data = {editable = true, path = "."}
 census-data-downloader = "*"
+census-map-downloader = "*"
 
 [requires]
 python_version = "3.9"

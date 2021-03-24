@@ -8,7 +8,7 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="census-data",
-    version="0.1.0",
+    version="0.2.0",
     description="Download U.S. census data and reformat it for humans",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -28,6 +28,7 @@ setup(
         downloadpep=census_data.cli:download_pep_cmd
         downloadacs5bg=census_data.cli:download_acs5_blockgroup
         mycensusdatadownloader=census_data.cli:cmd
+        mycensusmapdownloader=census_data.map.cli:cmd
     """,
     classifiers=[
         "Development Status :: 5 - Production/Stable",

@@ -14,6 +14,7 @@ import pandas as pd
 
 from census_data.core import AugmentedCensus
 from census_data.core.geotypes import BlockGroupsDownloader
+import census_data.map
 from census_data.tables import (
     HouseholdsGrandparentsLivingWithGrandchildren,
 )
@@ -194,7 +195,6 @@ def download_acs5_blockgroup(table, data_dir="./", year=None, force=False):
     downloader = BlockGroupsDownloader(table_config, year)
     downloader.download()
     downloader.process()
-
 
 # Below this line is copied from census_data_downloader.cli
 # This essentially creates a parallel version of the `censusdatadownloader`
