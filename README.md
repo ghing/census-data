@@ -113,6 +113,10 @@ make data/raw/2019_Gaz_place_national.zip
 Download county boundaries:
 
 ```
+make data/processed/counties_2020.geojson
+```
+
+```
 make data/processed/counties_2018.geojson
 ```
 
@@ -123,6 +127,16 @@ make data/processed/cbsas_2020.geojson
 ```
 
 Download tract boundaries:
+
+Tracts are drawn for the decennial census, but you can download tract files for many years in-between. Why is this?
+
+The [TIGER/Line Technical Documentation](https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc_Ch3.pdf) says:
+
+> Current geography may differ from 2010 Census geography due to changes from several sources: in the case of census tracts and block groups, the most common changes are splitting or merging 2010 entities to accommodate population changes in the past decade. Small boundary changes to statistical entities may also follow feature update or align disparate geographic entities for database hygiene. For example, if a street feature that acts as a census tract boundary moves, then the census tract boundary will move as well. In addition, census tract boundaries may change to maintain comparability with related geographies (e.g., incorporated places).
+
+```
+make data/processed/tracts_2020.geojson
+```
 
 ```
 make data/processed/tracts_2010.geojson
