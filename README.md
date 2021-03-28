@@ -44,6 +44,30 @@ Reproducibly create a repository of frequently-used census data.
 - [datadesk/census-data-downloader](https://github.com/datadesk/census-data-downloader/)
 - [datadesk/census-map-downloader](https://github.com/datadesk/census-map-downloader)
 - GNU Make
+- `ogr2ogr` (for loading data into a SQL database)
+
+### What's in here?
+
+- `Makefile`: Main file used by GNU make to download and process data.
+- `census_data.db`: Spatialite database that will be created if you run some of the make commands to load other data into a table.
+- `etl`: Extract, transform and load (ETL) scripts.
+  - `etl/*.mk`: Makefiles that are included in the top-level `Makefile` to handle specific parts of the ETL pipeline.
+  - `etl/sql.mk`: Make rules for loading data into a SQL database. 
+- `census_data`: A Python package that includes custom code (including command-line tools) to download and process data that isn't available using the `censusdatadownloader` and `censusmapdownloader` tools.
+
+### Why make?
+
+As Mike Bostock puts it, "Makefiles are machine-readable documentation that make your workflow reproducible."
+
+Makefiles are not the most frequently-discussed concepts for working with data and journalism, but make is available on many platforms and it's more straightforward than other data pipeline tools. Critically, make provides a way to say "build this output only if this previous step has been built" (and will build that previous step if needed. It will also rebuild outputs if an input has been changed/updated.
+
+While the syntax of makefiles and their quirks take some getting used to, the files clearly describe the dependencies between different data sets in a way that would be complex and time-consuming to document.
+
+Other data journalism (or adjacent) resources using `make`:
+
+- [Making Data, the DataMade Way](https://github.com/datamade/data-making-guidelines)
+- [Why Use Make](https://bost.ocks.org/mike/make/) (Mike Bostock)
+
 
 ### Project setup instructions
 
@@ -155,6 +179,22 @@ Download state population estimates:
 ```
 make data/processed/pep_2019_population_states.csv
 ```
+
+## Loading data into a SQL database
+
+It seems like a common task for this data will be to join data together, whether it's joining multiple ACS tables, or joining ACS table data to boundaries. While it's possible to do this in R or GeoPandas, a SQL database seems like a natural fit for these kinds of operations.
+
+Some of the most common data tables that are downloaded and processed using make rules that use `censusdatadownloader` or `censusmapdownloader` can be loaded into a SQL database using a command like:
+
+```
+data/processed/db_tables/counties_2020
+```
+
+See the makefile `etl/sql.mk` for supported data.
+
+I've implemented an experimental feature that includes make rules for loading commonly used data into a Spatialite database. I chose Spatialite because it's supported by QGIS, the [sf R package](https://github.com/r-spatial/sf/blob/master/tests/read.R#L69) and [geopandas](https://geopandas.org/reference/geopandas.read_postgis.html) (tl;dr `read_postgis()` can read from any SQLAlchemy-supported database, not just POSTGIS). More importantly, since SQLite/Spatialite store the entire database in a single file, it's possible for someone with more technical skills to create a database pre-populated with this data and then someone who knows SQL can download a copy and use it. Also, I've found that installing and running SQLite/Spatialite is easier than running PostgreSQL/PostGIS.
+
+However, PostGIS remains the most widely-supported and robust spatial database program so it might make sense to eventually add support for PostGIS, or if we run into limitations with Spatialite, switch entirely to PostGIS.
 
 ## Data notes
 

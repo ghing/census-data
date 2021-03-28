@@ -6,6 +6,11 @@ DATA_DIR_MANUAL := $(DATA_DIR)/manual
 DATA_DIR_PROCESSED := $(DATA_DIR)/processed
 DATA_DIR_PUBLIC :=  $(DATA_DIR)/public
 
+# SQLAlchemy-style URL for connecting to a SQL database
+# Currently, only SQLite/Spatialite is supported, but it might make sense to
+# support/switch to PostgreSQL.
+DB_URL := sqlite:///census_data.db
+
 SHARED_DATA :=
 
 # Rules to download different types of data are broken out into individual
@@ -17,6 +22,10 @@ include etl/popest.mk
 include etl/boundaries.mk
 include etl/gazetteer.mk
 include etl/seniors.mk
+# This needs to go last since it references targets in other makefiles
+include etl/sql.mk
+
+# TODO: Is there a set of data that should be downloaded using `make all`
 
 # Create directories for data
 

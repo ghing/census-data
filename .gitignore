@@ -17,3 +17,6 @@ scratch/
 
 build
 *.egg-info
+
+# Ignore the Spatialite database
+census_data.db
