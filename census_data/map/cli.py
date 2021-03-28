@@ -38,3 +38,9 @@ def counties(ctx):
 def tracts(ctx):
     obj = census_data.map.TractsDownloader2020(data_dir=ctx.obj['data_dir'])
     obj.run()
+
+@cmd.command(help="Download ZCTAs")
+@click.pass_context
+def zctas(ctx):
+    obj = census_data.map.ZctasDownloader2020(data_dir=ctx.obj['data_dir'])
+    obj.run()

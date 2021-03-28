@@ -29,5 +29,10 @@ $(DATA_DIR_PROCESSED)/tracts_2010.geojson: | $(DATA_DIR_PROCESSED)
 	censusmapdownloader --data-dir $(DATA_DIR) tracts
 
 # ZCTA boundaries
-$(DATA_DIR_PROCESSED)/zctas_2010.geojson: | $(DATA_DIR_PROCESSED)
+# `censusmapdownloader` creates a separate GeoJSON file for each state's
+# ZCTAs, so target the shapefile instead.
+$(DATA_DIR_SRC)/tl_2020_us_zcta510.shp: | $(DATA_DIR_SRC)
+	pipenv run mycensusmapdownloader --data-dir $(DATA_DIR) zctas
+
+$(DATA_DIR_SRC)/tl_2010_us_zcta510.shp: | $(DATA_DIR_SRC)
 	censusmapdownloader --data-dir $(DATA_DIR) zctas

@@ -58,6 +58,15 @@ $(TABLE_PROXY_DIR)/tracts_2020: $(DATA_DIR_PROCESSED)/tracts_2020.geojson | $(TA
 	ogr2ogr -f SQLite -a_srs "EPSG:4269" -nlt MULTIPOLYGON -dsco SPATIALITE=yes -nln $(basename $(notdir $<)) $(SQLITE_DB_PATH) -update -append $< \
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
+# Load ZCTA boundaries
+# `censusmapdownloader` makes one GeoJSON file per state, so load from the
+# shapefile instead.
+# TODO: Deal with the fact that the fields aren't renamed in the shapefile
+# like they are in the GeoJSON.
+$(TABLE_PROXY_DIR)/zctas_2020: $(DATA_DIR_SRC)/tl_2020_us_zcta510.shp | $(TABLE_PROXY_DIR)
+	ogr2ogr -f SQLite -a_srs "EPSG:4269" -nlt MULTIPOLYGON -dsco SPATIALITE=yes -nln zctas_2020 $(SQLITE_DB_PATH) -update -append $< \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM zctas_2020;" > $@
+
 # Create directories for data
 
 # Create the directory that will hold the text files that
