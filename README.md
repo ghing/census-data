@@ -91,13 +91,13 @@ Downloading data is handled by make rules.
 Download racial demographics (technically [Table B03002](https://censusreporter.org/tables/B03002/): Hispanic or Latino Origin by Race) by census tract:
 
 ```
-make data/processed/acs5_2018_race_tracts.csv
+make data/processed/acs5_2019_race_tracts.csv
 ```
 
 and by block group:
 
 ```
-make data/processed/acs5_2018_race_blockgroups.csv
+make data/processed/acs5_2019_race_blockgroups.csv
 ```
 
 and by ZIP code tabulation area (ZCTA):
