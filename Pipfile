@@ -15,8 +15,8 @@ census = "*"
 click = "*"
 census-data = {editable = true, path = "."}
 census-data-downloader = "*"
-census-map-downloader = "*"
 sqlite-utils = "*"
+census-map-downloader = {ref = "8-support-year", git = "https://github.com/ghing/census-map-downloader.git"}
 
 [requires]
 python_version = "3.9"

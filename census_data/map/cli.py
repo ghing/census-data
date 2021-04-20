@@ -26,21 +26,3 @@ def cmd(ctx, data_dir="./"):
 def cbsas(ctx):
     obj = census_data.map.CbsasDownloader2020(data_dir=ctx.obj['data_dir'])
     obj.run()
-
-@cmd.command(help="Download counties")
-@click.pass_context
-def counties(ctx):
-    obj = census_data.map.CountiesDownloader2020(data_dir=ctx.obj['data_dir'])
-    obj.run()
-
-@cmd.command(help="Download tracts")
-@click.pass_context
-def tracts(ctx):
-    obj = census_data.map.TractsDownloader2020(data_dir=ctx.obj['data_dir'])
-    obj.run()
-
-@cmd.command(help="Download ZCTAs")
-@click.pass_context
-def zctas(ctx):
-    obj = census_data.map.ZctasDownloader2020(data_dir=ctx.obj['data_dir'])
-    obj.run()
