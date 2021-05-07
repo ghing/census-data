@@ -60,7 +60,7 @@
         },
         "census-map-downloader": {
             "git": "https://github.com/ghing/census-map-downloader.git",
-            "ref": "511951373e57391486361cf1ea0d1fc3e168ad33"
+            "ref": "84b0aaf71678b8f7916e686bcd040834fdf6239e"
         },
         "certifi": {
             "hashes": [

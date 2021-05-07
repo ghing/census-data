@@ -20,6 +20,9 @@ $(DATA_DIR_PROCESSED)/cbsas_2020.geojson: | $(DATA_DIR_PROCESSED)
 $(DATA_DIR_PROCESSED)/tracts_2020.geojson: | $(DATA_DIR_PROCESSED)
 	pipenv run censusmapdownloader --year 2020 --data-dir $(DATA_DIR) tracts
 
+$(DATA_DIR_PROCESSED)/tracts_2019.geojson: | $(DATA_DIR_PROCESSED)
+	pipenv run censusmapdownloader --year 2019 --data-dir $(DATA_DIR) tracts
+
 $(DATA_DIR_PROCESSED)/tracts_2010.geojson: | $(DATA_DIR_PROCESSED)
 	pipenv run censusmapdownloader --year 2010 --data-dir $(DATA_DIR) tracts
 
