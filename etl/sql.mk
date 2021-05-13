@@ -162,6 +162,10 @@ $(TABLE_PROXY_DIR)/tracts_2020: $(DATA_DIR_PROCESSED)/tracts_2020.geojson | $(TA
 	ogr2ogr -f SQLite -a_srs "EPSG:4269" -nlt MULTIPOLYGON -dsco SPATIALITE=yes -nln $(basename $(notdir $<)) $(SQLITE_DB_PATH) -update -append $< \
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
+$(TABLE_PROXY_DIR)/tracts_2019: $(DATA_DIR_PROCESSED)/tracts_2019.geojson | $(TABLE_PROXY_DIR)
+	ogr2ogr -f SQLite -a_srs "EPSG:4269" -nlt MULTIPOLYGON -dsco SPATIALITE=yes -nln $(basename $(notdir $<)) $(SQLITE_DB_PATH) -update -append $< \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
+
 # Load ZCTA boundaries
 # `censusmapdownloader` makes one GeoJSON file per state, so load from the
 # shapefile instead.
