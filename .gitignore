@@ -1,5 +1,7 @@
 *.vim
 .DS_Store
+.vscode
+
 .env
 
 .ipynb_checkpoints
