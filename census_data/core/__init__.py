@@ -3,6 +3,7 @@
 from census import Census
 
 from census_data.pep import IntPopulationClient, PepClient
+from census_data.responserate import ResponseRateClient
 
 
 # pylint: disable=too-few-public-methods
@@ -16,3 +17,4 @@ class AugmentedCensus(Census):
 
         self.int_population = IntPopulationClient(key, year, session)
         self.pep = PepClient(key, year, session)
+        self.responserate = ResponseRateClient(key, year, session)
