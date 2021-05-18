@@ -2,9 +2,9 @@
 
 Reusable Census data that can be useful to multiple projects.
 
-*Created by Geoff Hing (<ghing@apmreports.org>)*
+*Created by Geoff Hing)*
 
-*Reporter: Geoff Hing (<ghing@apmreports.org>)*
+*Reporter: Geoff Hing*
 
 ## Project goal
 
@@ -14,7 +14,7 @@ Reproducibly create a repository of frequently-used census data.
 
 ### Staff involved
 
-- Geoff Hing <ghing@apmreports.org>: Develop and maintain this project
+- Geoff Hing: Develop and maintain this project
 
 ### Data sources
 
