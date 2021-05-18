@@ -25,6 +25,10 @@ Reproducibly create a repository of frequently-used census data.
   - URL: https://www.census.gov/programs-surveys/acs
   - Agency: U.S. Census Bureau
 
+- Decennial Census Self-Response Rates
+  - URL: https://www.census.gov/data/developers/data-sets/decennial-response-rates.2020.html
+  - Agency: U.S. Census Bureau
+
 - Gazeteer Files
   - URL: https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.html
   - Agency: U.S. Census Bureau
