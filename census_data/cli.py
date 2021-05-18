@@ -7,16 +7,19 @@ import os
 from pathlib import Path
 
 # We'll use some of the field name crosswalks from this package in our code.
-from census import Census
 from census_data_downloader.tables import TABLE_LIST
 import click
 import pandas as pd
 
 from census_data.core import AugmentedCensus
-from census_data.core.geotypes import BlockGroupsDownloader
-import census_data.map
-from census_data.tables import (
+from census_data.core.geotypes import BlockGroupsDownloader, NonACSTractsDownloader
+from census_data.tables import (  # pylint:disable=unused-import
+    # HACK: Import these classes so they get registered in TABLE_LIST
     HouseholdsGrandparentsLivingWithGrandchildren,
+    # HACK: These classes are used explicitly, with logic in the command to
+    # select which one to use.
+    ResponseRate2020Downloader,
+    ResponseRate2010Downloader,
 )
 
 CENSUS_API_KEY = os.environ.get("CENSUS_API_KEY")
@@ -28,7 +31,7 @@ TABLES_LOOKUP = dict((k.PROCESSED_TABLE_NAME, k) for k in TABLE_LIST)
 # `census-data-downloader`. This could ultimately enable pushing this
 # functionality upstream to that package.
 #
-# See https://github.com/datadesk/census-data-downloader/blob/master/census_data_downloader/core/geotypes.py
+# See https://github.com/datadesk/census-data-downloader/blob/master/census_data_downloader/core/geotypes.py pylint:disable=line-too-long
 def download_pep(raw_geotype, year, raw_csv_path):
     """Download population estimates"""
     census = AugmentedCensus(CENSUS_API_KEY)
@@ -196,6 +199,43 @@ def download_acs5_blockgroup(table, data_dir="./", year=None, force=False):
     downloader.download()
     downloader.process()
 
+@click.option(
+    "--data-dir",
+    nargs=1,
+    default="./",
+    help="The folder where you want to download the data",
+)
+@click.option(
+    "--year",
+    default=2020,
+    type=int,
+    help=(
+        "The years of data to download. By default it gets only the latest year. "
+        "Not all data are available for every year. Submit 'all' to get every year."
+    ),
+)
+@click.option("--force", is_flag=True, help="Force the downloading of the data")
+@click.command()
+def download_responserate_tract(data_dir="./", year=None, force=False):
+    """
+    Download Decennial Census Self-Response Rates
+
+    This functionality is not supported by the `census-data-downloader` tool.
+
+    """
+    # HACK: The 2020 and 2010 response rate tables are similar but have
+    # different numbers of fields, so there are two separate classes.
+    if year == 2020:
+        table_config_klass = ResponseRate2020Downloader
+
+    elif year == 2010:
+        table_config_klass = ResponseRate2010Downloader
+
+    table_config = table_config_klass(years=[year], data_dir=data_dir, force=force)
+    downloader = NonACSTractsDownloader(table_config, year)
+    downloader.download()
+    downloader.process()
+
 # Below this line is copied from census_data_downloader.cli
 # This essentially creates a parallel version of the `censusdatadownloader`
 # command with custom tables added.
@@ -211,11 +251,16 @@ def download_acs5_blockgroup(table, data_dir="./", year=None, force=False):
     "--year",
     default=None,
     type=int,
-    help="The years of data to download. By default it gets only the latest year. Not all data are available for every year. Submit 'all' to get every year.",
+    help=(
+        "The years of data to download. By default it gets only the latest "
+        "year. Not all data are available for every year. Submit 'all' to get "
+        "every year."
+    ),
 )
 @click.option("--force", is_flag=True, help="Force the downloading of the data")
 @click.pass_context
 def cmd(ctx, table, data_dir="./", year=None, force=False):
+    # pylint: disable=missing-function-docstring
     ctx.ensure_object(dict)
     ctx.obj["table"] = table
     ctx.obj["data_dir"] = data_dir
@@ -224,7 +269,7 @@ def cmd(ctx, table, data_dir="./", year=None, force=False):
     try:
         klass = TABLES_LOOKUP[ctx.obj["table"]]
     except KeyError:
-        raise click.ClickException("Table not found")
+        raise click.ClickException("Table not found")  # pylint:disable=raise-missing-from
     ctx.obj["klass"] = klass
     ctx.obj["runner"] = klass(data_dir=data_dir, years=year, force=force)
 
@@ -232,36 +277,42 @@ def cmd(ctx, table, data_dir="./", year=None, force=False):
 @cmd.command(help="Download nationwide data")
 @click.pass_context
 def nationwide(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_nationwide()
 
 
 @cmd.command(help="Download divisions")
 @click.pass_context
 def divisions(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_divisions()
 
 
 @cmd.command(help="Download regions")
 @click.pass_context
 def regions(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_regions()
 
 
 @cmd.command(help="Download states")
 @click.pass_context
 def states(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_states()
 
 
 @cmd.command(help="Download Congressional districts")
 @click.pass_context
 def congressionaldistricts(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_congressional_districts()
 
 
 @cmd.command(help="Download statehouse districts")
 @click.pass_context
 def statelegislativedistricts(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_state_legislative_upper_districts()
     ctx.obj["runner"].download_state_legislative_lower_districts()
 
@@ -269,48 +320,56 @@ def statelegislativedistricts(ctx):
 @cmd.command(help="Download counties in all states")
 @click.pass_context
 def counties(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_counties()
 
 
 @cmd.command(help="Download Census-designated places")
 @click.pass_context
 def places(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_places()
 
 
 @cmd.command(help="Download urban areas")
 @click.pass_context
 def urbanareas(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_urban_areas()
 
 
 @cmd.command(help="Download metropolitan statistical areas")
 @click.pass_context
 def msas(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_msas()
 
 
 @cmd.command(help="Download combined statistical areas")
 @click.pass_context
 def csas(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_csas()
 
 
 @cmd.command(help="Download public use microdata areas")
 @click.pass_context
 def pumas(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_pumas()
 
 
 @cmd.command(help="Download New England city and town areas")
 @click.pass_context
 def nectas(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_nectas()
 
 
 @cmd.command(help="Download combined New England city and town areas")
 @click.pass_context
 def cnectas(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_cnectas()
 
 
@@ -319,52 +378,61 @@ def cnectas(ctx):
 )
 @click.pass_context
 def aiannhhomelands(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_aiannh_homelands()
 
 
 @cmd.command(help="Download Census tracts")
 @click.pass_context
 def tracts(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_tracts()
 
 
 @cmd.command(help="Download ZIP Code tabulation areas")
 @click.pass_context
 def zctas(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_zctas()
 
 
 @cmd.command(help="Download unified school districts")
 @click.pass_context
 def unifiedschooldistricts(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_unified_school_districts()
 
 
 @cmd.command(help="Download elementary school districts")
 @click.pass_context
 def elementaryschooldistricts(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_elementary_school_districts()
 
 
 @cmd.command(help="Download secondary school districts")
 @click.pass_context
 def secondaryschooldistricts(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_secondary_school_districts()
 
 
 @cmd.command(help="Download Alaska Native regional corporations")
 @click.pass_context
 def alaskanative(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_alaska_native()
 
 
 @cmd.command(help="Download county subdivisions")
 @click.pass_context
 def countysubdivision(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_county_subdivision()
 
 
 @cmd.command(help="Download everything from everywhere")
 @click.pass_context
 def everything(ctx):
+    # pylint: disable=missing-function-docstring
     ctx.obj["runner"].download_everything()

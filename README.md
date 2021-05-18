@@ -180,6 +180,16 @@ Download state population estimates:
 make data/processed/pep_2019_population_states.csv
 ```
 
+### Load decennial census self-response rates
+
+```
+make data/processed/responserate_2020_population_tracts.csv
+```
+
+```
+make data/processed/responserate_2010_population_tracts.csv
+```
+
 ## Loading data into a SQL database
 
 It seems like a common task for this data will be to join data together, whether it's joining multiple ACS tables, or joining ACS table data to boundaries. While it's possible to do this in R or GeoPandas, a SQL database seems like a natural fit for these kinds of operations.

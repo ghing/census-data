@@ -16,7 +16,7 @@ TABLE_PROXY_DIR := $(DATA_DIR_PROCESSED)/db_tables
 
 .PHONY: clean_table_proxy clean_sql_db
 
-# Load estimates
+# Load ACS estimates
 
 # Table B03002: Hispanic or Latino Origin by Race, tracts
 $(TABLE_PROXY_DIR)/acs5_2019_race_tracts: $(DATA_DIR_PROCESSED)/acs5_2019_race_tracts.csv | $(TABLE_PROXY_DIR)
@@ -117,6 +117,11 @@ $(TABLE_PROXY_DIR)/acs5_2019_race_zctas: $(DATA_DIR_PROCESSED)/acs5_2019_race_zc
 	  --type other_all_moe float \
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
+# Load self-response rates
+
+$(TABLE_PROXY_DIR)/responserate_2020_responserate_tracts: $(DATA_DIR_PROCESSED)/responserate_2020_responserate_tracts.csv | $(TABLE_PROXY_DIR)
+	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
 # Load boundaries
 
