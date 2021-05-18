@@ -2,6 +2,9 @@
 
 Reusable Census data that can be useful to multiple projects.
 
+
+When possible, this project uses [census-data-downloader](https://github.com/datadesk/census-data-downloader/) and [census-map-downloader](https://github.com/datadesk/census-map-downloader) to download data.
+
 *Created by Geoff Hing)*
 
 *Reporter: Geoff Hing*
@@ -41,8 +44,6 @@ Reproducibly create a repository of frequently-used census data.
 
 - Python 3.6+ (I developed this with 3.9)
 - Pipenv
-- [datadesk/census-data-downloader](https://github.com/datadesk/census-data-downloader/)
-- [datadesk/census-map-downloader](https://github.com/datadesk/census-map-downloader)
 - GNU Make
 - `ogr2ogr` (for loading data into a SQL database)
 
@@ -75,6 +76,18 @@ After cloning the git repo, and changing directory to the project directory, ins
 
 ```
 pipenv install
+```
+
+If you're updating this codebase and want to run the code formatter and linter using git pre-commit hooks, install the development dependencies:
+
+```
+pipenv install --dev
+```
+
+and set up the git hook scripts:
+
+```
+pipenv run pre-commit install
 ```
 
 ### Census data downloader

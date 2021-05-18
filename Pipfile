@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 pylint = "*"
+pre-commit = "*"
 
 [packages]
 prompt-toolkit = ">=2.0.4"
