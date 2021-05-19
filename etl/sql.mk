@@ -150,6 +150,12 @@ $(TABLE_PROXY_DIR)/responserate_2010_responserate_tracts: $(DATA_DIR_PROCESSED)/
 	  --type cumulative float \
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
+# Load 2020 self-response rate tract relationship file
+
+$(TABLE_PROXY_DIR)/rr_tract_rel.txt: $(DATA_DIR_SRC)/rr_tract_rel.zip | $(TABLE_PROXY_DIR)
+	pipenv run ./etl/load_responserate_tract_rel.py $< $(SQLITE_DB_PATH) \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
+
 # Load boundaries
 
 # ogr2ogr command explanation

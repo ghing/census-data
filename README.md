@@ -42,6 +42,11 @@ Reproducibly create a repository of frequently-used census data.
   - URL: https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html
   - Agency: U.S. Census Bureau
 
+- Crosswalk between 2020 Census self-response tracts and current tracts
+  - URL: https://www2.census.gov/geo/maps/DC2020/SR20/
+  - Agency: U.S. Census Bureau
+  - [CENSUS 2020 SELF-RESPONSE DATA: QUESTIONS AND ANSWERS](https://www.gc.cuny.edu/Page-Elements/Academics-Research-Centers-Initiatives/Centers-and-Institutes/Center-for-Urban-Research/CUR-research-initiatives/Census-2020/Census-2020-Self-Response-Data-Questions-and-Answers) has some useful notes about this crosswalk
+
 ## Technical
 
 ### Assumptions
