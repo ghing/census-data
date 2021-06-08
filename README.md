@@ -230,4 +230,8 @@ However, PostGIS remains the most widely-supported and robust spatial database p
 
 ## Data notes
 
-*Add important caveats, limitations, and source contact info here.*
+### Useful references
+
+- [Census Regions and Divisions of the United States](https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf)
+- [Hierarchy Diagrams](https://www.census.gov/programs-surveys/geography/guidance/hierarchy.html)
+  - ["The spine"](https://www2.census.gov/geo/pdfs/reference/geodiagram.pdf)
