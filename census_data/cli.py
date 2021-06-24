@@ -12,14 +12,10 @@ import click
 import pandas as pd
 
 from census_data.core import AugmentedCensus
-from census_data.core.geotypes import BlockGroupsDownloader, NonACSTractsDownloader
+from census_data.core.geotypes import BlockGroupsDownloader
 from census_data.tables import (  # pylint:disable=unused-import
     # HACK: Import these classes so they get registered in TABLE_LIST
     HouseholdsGrandparentsLivingWithGrandchildren,
-    # HACK: These classes are used explicitly, with logic in the command to
-    # select which one to use.
-    ResponseRate2020Downloader,
-    ResponseRate2010Downloader,
 )
 
 CENSUS_API_KEY = os.environ.get("CENSUS_API_KEY")
@@ -199,42 +195,6 @@ def download_acs5_blockgroup(table, data_dir="./", year=None, force=False):
     downloader.download()
     downloader.process()
 
-@click.option(
-    "--data-dir",
-    nargs=1,
-    default="./",
-    help="The folder where you want to download the data",
-)
-@click.option(
-    "--year",
-    default=2020,
-    type=int,
-    help=(
-        "The years of data to download. By default it gets only the latest year. "
-        "Not all data are available for every year. Submit 'all' to get every year."
-    ),
-)
-@click.option("--force", is_flag=True, help="Force the downloading of the data")
-@click.command()
-def download_responserate_tract(data_dir="./", year=None, force=False):
-    """
-    Download Decennial Census Self-Response Rates
-
-    This functionality is not supported by the `census-data-downloader` tool.
-
-    """
-    # HACK: The 2020 and 2010 response rate tables are similar but have
-    # different numbers of fields, so there are two separate classes.
-    if year == 2020:
-        table_config_klass = ResponseRate2020Downloader
-
-    elif year == 2010:
-        table_config_klass = ResponseRate2010Downloader
-
-    table_config = table_config_klass(years=[year], data_dir=data_dir, force=force)
-    downloader = NonACSTractsDownloader(table_config, year)
-    downloader.download()
-    downloader.process()
 
 # Below this line is copied from census_data_downloader.cli
 # This essentially creates a parallel version of the `censusdatadownloader`
@@ -269,7 +229,9 @@ def cmd(ctx, table, data_dir="./", year=None, force=False):
     try:
         klass = TABLES_LOOKUP[ctx.obj["table"]]
     except KeyError:
-        raise click.ClickException("Table not found")  # pylint:disable=raise-missing-from
+        raise click.ClickException(  # pylint:disable=raise-missing-from
+            "Table not found"
+        )
     ctx.obj["klass"] = klass
     ctx.obj["runner"] = klass(data_dir=data_dir, years=year, force=force)
 

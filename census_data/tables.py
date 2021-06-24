@@ -9,15 +9,18 @@ https://github.com/datadesk/census-data-downloader/tree/master/census_data_downl
 """
 
 import collections
+
 from census_data_downloader.core.tables import BaseTableConfig
 from census_data_downloader.core.decorators import register
-
 import numpy as np
+
+from census_data.core.tables import NonACSBaseTableConfig
 
 
 @register
 class HouseholdsGrandparentsLivingWithGrandchildren(BaseTableConfig):
     """ACS Table B10063"""
+
     PROCESSED_TABLE_NAME = (
         "grandparentslivingwithgrandchildren"  # Your humanized table name
     )
@@ -36,42 +39,51 @@ class HouseholdsGrandparentsLivingWithGrandchildren(BaseTableConfig):
         }
     )
 
+
 @register
-class ResponseRate2020Downloader(BaseTableConfig):
+class ResponseRate(NonACSBaseTableConfig):
     """
-    Decennial Census Self-Response Rates 2020
+    Decennial Census Self-Response Rates
+
 
     See https://www.census.gov/data/developers/data-sets/decennial-response-rates.2020.html
+    and https://www.census.gov/data/developers/data-sets/decennial-response-rates.2010.html
 
     """
-    YEAR_LIST = [2020,]
+
+    YEAR_LIST = [
+        2010,
+        2020,
+    ]
     PROCESSED_TABLE_NAME = "responserate"
-    UNIVERSE = "households" # This might actually be addresses
+    UNIVERSE = "households"  # This might actually be addresses
     RAW_TABLE_NAME = "responserate"
-    RAW_FIELD_CROSSWALK = collections.OrderedDict({
-        "CAVG": "avg_cumulative",
-        "CINTAVG": "avg_cumulative_internet",
-        "CINTMAX": "max_cumulative_internet",
-        "CINTMED": "med_cumulative_internet",
-        "CINTMIN": "min_cumulative_internet",
-        "CMAX": "max_cumulative",
-        "CMED": "med_cumulative",
-        "CMIN": "min_cumulative",
-        "CRRALL": "cumulative",
-        "CRRINT": "internet",
-        "DAVG": "avg_daily",
-        "DINTAVG": "avg_daily_internet",
-        "DINTMAX": "max_daily_internet",
-        "DINTMED": "med_daily_internet",
-        "DINTMIN": "min_daily_internet",
-        "DMAX": "max_daily",
-        "DMED": "med_daily",
-        "DMIN": "min_daily",
-        "DRRALL": "daily",
-        "DRRINT": "daily_internet",
-        "RESP_DATE": "resp_date",
-    })
-    FIELD_TYPES = {
+    RAW_FIELD_CROSSWALK_2020 = collections.OrderedDict(
+        {
+            "CAVG": "avg_cumulative",
+            "CINTAVG": "avg_cumulative_internet",
+            "CINTMAX": "max_cumulative_internet",
+            "CINTMED": "med_cumulative_internet",
+            "CINTMIN": "min_cumulative_internet",
+            "CMAX": "max_cumulative",
+            "CMED": "med_cumulative",
+            "CMIN": "min_cumulative",
+            "CRRALL": "cumulative",
+            "CRRINT": "internet",
+            "DAVG": "avg_daily",
+            "DINTAVG": "avg_daily_internet",
+            "DINTMAX": "max_daily_internet",
+            "DINTMED": "med_daily_internet",
+            "DINTMIN": "min_daily_internet",
+            "DMAX": "max_daily",
+            "DMED": "med_daily",
+            "DMIN": "min_daily",
+            "DRRALL": "daily",
+            "DRRINT": "daily_internet",
+            "RESP_DATE": "resp_date",
+        }
+    )
+    FIELD_TYPES_2020 = {
         "CAVG": np.float64,
         "CINTAVG": np.float64,
         "CINTMAX": np.float64,
@@ -94,42 +106,33 @@ class ResponseRate2020Downloader(BaseTableConfig):
         "DRRINT": np.float64,
     }
 
-    def __init__(   # pylint:disable=too-many-arguments
-        self,
-        api_key=None,
-        source="responserate",
-        years=None,
-        data_dir=None,
-        force=False
-    ):
-        super().__init__(api_key, source, years, data_dir, force)
-
-
-@register
-class ResponseRate2010Downloader(BaseTableConfig):
-    """
-    Decennial Census Self-Response Rates 2010
-
-    See https://www.census.gov/data/developers/data-sets/decennial-response-rates.2010.html
-
-    """
-    YEAR_LIST = [2010,]
-    PROCESSED_TABLE_NAME = "responserate"
-    UNIVERSE = "households" # This might actually be addresses
-    RAW_TABLE_NAME = "responserate"
-    RAW_FIELD_CROSSWALK = collections.OrderedDict({
-        "FSRR2010": "cumulative",
-    })
-    FIELD_TYPES = {
+    RAW_FIELD_CROSSWALK_2010 = collections.OrderedDict(
+        {
+            "FSRR2010": "cumulative",
+        }
+    )
+    FIELD_TYPES_2010 = {
         "FSRR2010": np.float64,
     }
 
-    def __init__(   # pylint:disable=too-many-arguments
+    def __init__(  # pylint:disable=too-many-arguments
         self,
         api_key=None,
         source="responserate",
         years=None,
         data_dir=None,
-        force=False
+        force=False,
     ):
         super().__init__(api_key, source, years, data_dir, force)
+
+    def get_raw_field_crosswalk(self, year=None):
+        if year == 2010:
+            return self.RAW_FIELD_CROSSWALK_2010
+
+        return self.RAW_FIELD_CROSSWALK_2020
+
+    def get_field_types(self, year=None):
+        if year == 2010:
+            return self.FIELD_TYPES_2010
+
+        return self.FIELD_TYPES_2020

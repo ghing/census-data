@@ -1,3 +1,5 @@
+"""Package setup"""
+
 from os import path
 from setuptools import setup
 
@@ -27,7 +29,6 @@ setup(
         [console_scripts]
         downloadpep=census_data.cli:download_pep_cmd
         downloadacs5bg=census_data.cli:download_acs5_blockgroup
-        downloadresponseratetract=census_data.cli:download_responserate_tract
         mycensusdatadownloader=census_data.cli:cmd
         mycensusmapdownloader=census_data.map.cli:cmd
     """,

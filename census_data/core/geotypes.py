@@ -218,8 +218,11 @@ class NonACSBaseGeoTypeDownloader(BaseGeoTypeDownloader):
     Expects a TableConfig instance and year as input.
 
     """
+
     # pylint: disable=too-many-instance-attributes
-    YEAR_LIST = [2020,] + BaseGeoTypeDownloader.YEAR_LIST
+    YEAR_LIST = [
+        2020,
+    ] + BaseGeoTypeDownloader.YEAR_LIST
 
     slug = "nationwide"
     raw_geotype = "us"
@@ -242,7 +245,9 @@ class NonACSBaseGeoTypeDownloader(BaseGeoTypeDownloader):
 
         # Validate the year
         if self.year not in self.YEAR_LIST:
-            raise NotImplementedError("Census API does not support this year for this geotype")
+            raise NotImplementedError(
+                "Census API does not support this year for this geotype"
+            )
 
         # Validate the geotype
         valid_geotype_slugs = [gt.replace("_", "") for gt in self.config.GEOTYPE_LIST]
@@ -258,11 +263,15 @@ class NonACSBaseGeoTypeDownloader(BaseGeoTypeDownloader):
         self.raw_csv_name = f"{self.config.source}_{self.year}_{self.config.PROCESSED_TABLE_NAME}_{self.slug}.csv"  # pylint: disable=line-too-long
         self.raw_csv_path = self.config.raw_data_dir.joinpath(self.raw_csv_name)
         self.processed_csv_name = f"{self.config.source}_{self.year}_{self.config.PROCESSED_TABLE_NAME}_{self.slug}.csv"  # pylint: disable=line-too-long
-        self.processed_csv_path = self.config.processed_data_dir.joinpath(self.processed_csv_name)
+        self.processed_csv_path = self.config.processed_data_dir.joinpath(
+            self.processed_csv_name
+        )
 
     def get_api_client(self, year):
         """Returns a Census API client"""
-        return getattr(AugmentedCensus(self.config.CENSUS_API_KEY, year=year), self.config.source)
+        return getattr(
+            AugmentedCensus(self.config.CENSUS_API_KEY, year=year), self.config.source
+        )
 
     def get_raw_field_map(self):
         """
@@ -272,10 +281,14 @@ class NonACSBaseGeoTypeDownloader(BaseGeoTypeDownloader):
         annotation suffixes.
 
         """
-        field_map = collections.OrderedDict({
-            'NAME': "name"
-        })
-        for field_id, field_name in self.config.RAW_FIELD_CROSSWALK.items():
+        field_map = collections.OrderedDict({"NAME": "name"})
+        try:
+            raw_field_crosswalk = self.config.get_raw_field_crosswalk(self.year)
+
+        except AttributeError:
+            raw_field_crosswalk = self.config.RAW_FIELD_CROSSWALK
+
+        for field_id, field_name in raw_field_crosswalk.items():
             field_map[field_id] = field_name
 
         return field_map
@@ -284,7 +297,7 @@ class NonACSBaseGeoTypeDownloader(BaseGeoTypeDownloader):
         """
         Returns a map of type definitions for fields.
 
-        If present, it takes these from the `FIELD_TYPES` attribute of the
+        If present, it takes these from the `get_field_types()` method of the
         table configuration.
 
         Otherwise, it assumes an ACS table and uses the raw field suffixes to
@@ -293,10 +306,10 @@ class NonACSBaseGeoTypeDownloader(BaseGeoTypeDownloader):
         """
         field_type_map = {}
 
-        if hasattr(self.config, "FIELD_TYPES"):
+        if hasattr(self.config, "get_field_types"):
             # The table configuration class has the field types defined.
             # Use these.
-            for field_id, field_type in self.config.FIELD_TYPES.items():
+            for field_id, field_type in self.config.get_field_types(self.year).items():
                 field_type_map[field_id] = field_type
 
             return field_type_map
@@ -336,17 +349,15 @@ class NonACSBaseGeoTypeDownloader(BaseGeoTypeDownloader):
         df.rename(columns=field_name_mapper, inplace=True)
 
         # Add a combined GEOID column with a Census unique identifer
-        df['geoid'] = df.apply(self.create_geoid, axis=1)
+        df["geoid"] = df.apply(self.create_geoid, axis=1)
 
-        if hasattr(self.config, 'process'):
+        if hasattr(self.config, "process"):
             df = self.config.process(df)
 
         # Write it out
         logger.debug("Writing CSV to %s", self.processed_csv_path)
         df.set_index(["geoid", "name"]).to_csv(
-            self.processed_csv_path,
-            index=True,
-            encoding="utf-8"
+            self.processed_csv_path, index=True, encoding="utf-8"
         )
         return self.processed_csv_path
 
@@ -355,14 +366,12 @@ class NonACSBaseStateLevelGeoTypeDownloader(NonACSBaseGeoTypeDownloader):
     """
     Download and stitch together raw data the Census API only provides state by state.
     """
+
     def get_api_filter(self, state):
         """
         Returns an API filter to retrieve the correct data for the provided state.
         """
-        return {
-            'for': f'{self.raw_geotype}:*',
-            'in': f'state: {state.fips}'
-        }
+        return {"for": f"{self.raw_geotype}:*", "in": f"state: {state.fips}"}
 
     def get_raw_data(self):
         """
@@ -377,7 +386,7 @@ class NonACSBaseStateLevelGeoTypeDownloader(NonACSBaseGeoTypeDownloader):
                 self.config.RAW_TABLE_NAME,
                 state,
                 self.year,
-                self.config.source
+                self.config.source,
             )
             # Get the raw data
             api_filter = self.get_api_filter(state)
@@ -386,14 +395,16 @@ class NonACSBaseStateLevelGeoTypeDownloader(NonACSBaseGeoTypeDownloader):
         return api_data
 
     def create_geoid(self, row):
-        return row['state'] + row[self.raw_geotype]
+        return row["state"] + row[self.raw_geotype]
+
 
 class NonACSTractsDownloader(NonACSBaseStateLevelGeoTypeDownloader):
     """
     Download raw data at the tract level.
     """
+
     slug = "tracts"
     raw_geotype = "tract"
 
     def create_geoid(self, row):
-        return row['state'] + row['county'] + row[self.raw_geotype]
+        return row["state"] + row["county"] + row[self.raw_geotype]
