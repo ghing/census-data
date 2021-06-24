@@ -398,6 +398,31 @@ class NonACSBaseStateLevelGeoTypeDownloader(NonACSBaseGeoTypeDownloader):
         return row["state"] + row[self.raw_geotype]
 
 
+class NonACSNationwideDownloader(NonACSBaseGeoTypeDownloader):
+    """
+    Download raw data at the nationwide level.
+    """
+
+    slug = "nationwide"
+    raw_geotype = "us"
+
+    @property
+    def api_filter(self):
+        return {"for": "us:1"}
+
+    def create_geoid(self, row):
+        return 1
+
+
+class NonACSStatesDownloader(NonACSBaseGeoTypeDownloader):
+    """
+    Download raw data at the state level.
+    """
+
+    slug = "states"
+    raw_geotype = "state"
+
+
 class NonACSTractsDownloader(NonACSBaseStateLevelGeoTypeDownloader):
     """
     Download raw data at the tract level.
@@ -408,3 +433,6 @@ class NonACSTractsDownloader(NonACSBaseStateLevelGeoTypeDownloader):
 
     def create_geoid(self, row):
         return row["state"] + row["county"] + row[self.raw_geotype]
+
+
+# TODO: Implement other non-ACS downloader classes

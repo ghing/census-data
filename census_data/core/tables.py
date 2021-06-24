@@ -20,6 +20,24 @@ class NonACSBaseTableConfig(BaseTableConfig):
         """Returns the field types"""
         return self.FIELD_TYPES  # pylint:disable=no-member
 
+    #
+    # Geotype downloaders
+    #
+
+    @decorators.downloader
+    def download_nationwide(self):
+        """
+        Download nationwide data.
+        """
+        return geotypes.NonACSNationwideDownloader
+
+    @decorators.downloader
+    def download_states(self):
+        """
+        Download data for all states.
+        """
+        return geotypes.NonACSStatesDownloader
+
     @decorators.downloader
     def download_tracts(self):
         """

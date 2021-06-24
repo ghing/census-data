@@ -3,8 +3,20 @@
 
 # Download self-response rate data from the API
 
+$(DATA_DIR_PROCESSED)/responserate_2020_responserate_nationwide.csv: | $(DATA_DIR_PROCESSED)
+	pipenv run mycensusdatadownloader --data-dir $(DATA_DIR) --year 2020 responserate nationwide
+
+$(DATA_DIR_PROCESSED)/responserate_2020_responserate_states.csv: | $(DATA_DIR_PROCESSED)
+	pipenv run mycensusdatadownloader --data-dir $(DATA_DIR) --year 2020 responserate states 
+
 $(DATA_DIR_PROCESSED)/responserate_2020_responserate_tracts.csv: | $(DATA_DIR_PROCESSED)
 	pipenv run mycensusdatadownloader --data-dir $(DATA_DIR) --year 2020 responserate tracts
+
+$(DATA_DIR_PROCESSED)/responserate_2010_responserate_nationwide.csv: | $(DATA_DIR_PROCESSED)
+	pipenv run mycensusdatadownloader --data-dir $(DATA_DIR) --year 2010 responserate nationwide
+
+$(DATA_DIR_PROCESSED)/responserate_2010_responserate_states.csv: | $(DATA_DIR_PROCESSED)
+	pipenv run mycensusdatadownloader --data-dir $(DATA_DIR) --year 2010 responserate states 
 
 $(DATA_DIR_PROCESSED)/responserate_2010_responserate_tracts.csv: | $(DATA_DIR_PROCESSED)
 	pipenv run mycensusdatadownloader --data-dir $(DATA_DIR) --year 2020 responserate tracts
