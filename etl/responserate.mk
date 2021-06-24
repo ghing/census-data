@@ -3,10 +3,10 @@
 
 # Download self-response rate data from the API
 
-$(DATA_DIR_PROCESSED)/responserate_2020_population_tracts.csv: | $(DATA_DIR_PROCESSED)
+$(DATA_DIR_PROCESSED)/responserate_2020_responserate_tracts.csv: | $(DATA_DIR_PROCESSED)
 	pipenv run mycensusdatadownloader --data-dir $(DATA_DIR) --year 2020 responserate tracts
 
-$(DATA_DIR_PROCESSED)/responserate_2010_population_tracts.csv: | $(DATA_DIR_PROCESSED)
+$(DATA_DIR_PROCESSED)/responserate_2010_responserate_tracts.csv: | $(DATA_DIR_PROCESSED)
 	pipenv run mycensusdatadownloader --data-dir $(DATA_DIR) --year 2020 responserate tracts
 
 # Download the crosswalk from self-response rate tracts for the 2020 census
