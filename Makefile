@@ -22,6 +22,7 @@ include etl/popest.mk
 include etl/boundaries.mk
 include etl/gazetteer.mk
 include etl/seniors.mk
+include etl/relationship_files.mk
 include etl/responserate.mk
 # This needs to go last since it references targets in other makefiles
 include etl/sql.mk

@@ -202,7 +202,17 @@ Download state population estimates:
 make data/processed/pep_2019_population_states.csv
 ```
 
-### Load decennial census self-response rates
+### Relationship files
+
+Download [2010 Census Tabulation Block to 2020 Census Tabulation Block Relationship Files](https://www.census.gov/geographies/reference-files/time-series/geo/relationship-files.2020.html):
+
+```
+make data/raw/TAB2010_TAB2020_ST04.zip
+```
+
+Note that there is one file per state.
+
+### Decennial census self-response rates
 
 ```
 make data/processed/responserate_2020_population_tracts.csv
