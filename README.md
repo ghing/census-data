@@ -44,8 +44,16 @@ Reproducibly create a repository of frequently-used census data.
 
 - Crosswalk between 2020 Census self-response tracts and current tracts
   - URL: https://www2.census.gov/geo/maps/DC2020/SR20/
-  - Agency: U.S. Census Bureau
+  - agency: u.s. census bureau
   - [CENSUS 2020 SELF-RESPONSE DATA: QUESTIONS AND ANSWERS](https://www.gc.cuny.edu/Page-Elements/Academics-Research-Centers-Initiatives/Centers-and-Institutes/Center-for-Urban-Research/CUR-research-initiatives/Census-2020/Census-2020-Self-Response-Data-Questions-and-Answers) has some useful notes about this crosswalk
+
+- 2010 Census Tabulation Block to 2020 Census Tabulation Block Relationship Files
+  - URL: https://www.census.gov/geographies/reference-files/time-series/geo/relationship-files.2020.html
+  - Agency: U.S. Census Bureau
+
+- 2010 Census Summary File 1
+  - URL: https://www.census.gov/data/datasets/2010/dec/summary-file-1.html
+  - Agency: U.S. Census Bureau
 
 ## Technical
 
@@ -220,6 +228,12 @@ make data/processed/responserate_2020_population_tracts.csv
 
 ```
 make data/processed/responserate_2010_population_tracts.csv
+```
+
+### 2010 Census Summary File 1 (SF1)
+
+```
+make data/raw/az2010.sf1.zip
 ```
 
 ## Loading data into a SQL database
