@@ -251,6 +251,12 @@ $(TABLE_PROXY_DIR)/pl94171_2020_00003: $(DATA_DIR_SRC)/ri2018_2020Style.pl.zip |
 	&& rm -f $(DATA_DIR_SRC)/ri000032018_2020Style.pl \
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM pl94171_2020_00003;" > $@
 
+# Create a view for the commonly used columns
+$(TABLE_PROXY_DIR)/pl94171_2020_standard.view: $(TABLE_PROXY_DIR)/pl94171_2020_00003
+	sqlite3 $(SQLITE_DB_PATH) "DROP VIEW IF EXISTS pl94171_2020_standard;" \
+	&& sqlite3 $(SQLITE_DB_PATH) < etl/create_view_pl94171_2020_standard.sql \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM pl94171_2020_standard;" > $@
+
 # Create directories for data
 
 # Create the directory that will hold the text files that
