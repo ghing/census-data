@@ -1,0 +1,20 @@
+-- Create table for the legacy format 2020 P.L. 94-171 File 3 
+-- This is based on the R code at https://www.census.gov/programs-surveys/decennial-census/about/rdo/summary-files.html
+
+CREATE TABLE IF NOT EXISTS pl94171_2020_00003 (
+  FILEID TEXT,
+  STUSAB TEXT,
+  CHARITER TEXT,
+  CIFSN TEXT,
+  LOGRECNO INTEGER,
+  P0050001 INTEGER,
+  P0050002 INTEGER,
+  P0050003 INTEGER,
+  P0050004 INTEGER,
+  P0050005 INTEGER,
+  P0050006 INTEGER,
+  P0050007 INTEGER,
+  P0050008 INTEGER,
+  P0050009 INTEGER,
+  P0050010 INTEGER
+);

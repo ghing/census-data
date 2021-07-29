@@ -55,6 +55,11 @@ Reproducibly create a repository of frequently-used census data.
   - URL: https://www.census.gov/data/datasets/2010/dec/summary-file-1.html
   - Agency: U.S. Census Bureau
 
+- Prototype P.L. 94-171 Redistricting Data Summary File
+  - URL: https://www.census.gov/programs-surveys/decennial-census/about/rdo/program-management.html#P3
+  - Agency: U.S. Census Bureau
+  - Documentation: https://www2.census.gov/programs-surveys/decennial/2020/technical-documentation/complete-tech-docs/summary-file/2020Census_PL94_171Redistricting_StatesTechDoc_English.pdf
+
 ## Technical
 
 ### Assumptions
@@ -234,6 +239,12 @@ make data/processed/responserate_2010_population_tracts.csv
 
 ```
 make data/raw/az2010.sf1.zip
+```
+
+### Prototype P.L. 94-171 Redistricting Data Summary File
+
+```
+make data/raw/ri2018_2020Style.pl.zip 
 ```
 
 ## Loading data into a SQL database

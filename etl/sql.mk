@@ -213,6 +213,44 @@ $(TABLE_PROXY_DIR)/zctas_2020: $(DATA_DIR_SRC)/tl_2020_us_zcta510.shp | $(TABLE_
 	ogr2ogr -f SQLite -a_srs "EPSG:4269" -nlt MULTIPOLYGON -dsco SPATIALITE=yes -nln zctas_2020 $(SQLITE_DB_PATH) -update -append $< \
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM zctas_2020;" > $@
 
+# Load Prototype P.L. 94-171 Redistricting Data Summary File
+
+# Load geographic header
+$(TABLE_PROXY_DIR)/pl94171_2020_geo: $(DATA_DIR_SRC)/ri2018_2020Style.pl.zip | $(TABLE_PROXY_DIR)
+	sqlite3 $(SQLITE_DB_PATH) "DROP TABLE IF EXISTS pl94171_2020_geo;" \
+	&& sqlite3 $(SQLITE_DB_PATH) < etl/create_table_pl94171_2020_geo.sql \
+	&& unzip -d $(DATA_DIR_SRC) $< rigeo2018_2020Style.pl \
+	&& sqlite3 -csv -separator '|' $(SQLITE_DB_PATH) ".import $(DATA_DIR_SRC)/rigeo2018_2020Style.pl pl94171_2020_geo" \
+	&& rm -f $(DATA_DIR_SRC)/rigeo2018_2020Style.pl \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM pl94171_2020_geo;" > $@
+
+# Load file 1
+$(TABLE_PROXY_DIR)/pl94171_2020_00001: $(DATA_DIR_SRC)/ri2018_2020Style.pl.zip | $(TABLE_PROXY_DIR)
+	sqlite3 $(SQLITE_DB_PATH) "DROP TABLE IF EXISTS pl94171_2020_00001;" \
+	&& sqlite3 $(SQLITE_DB_PATH) < etl/create_table_pl94171_2020_00001.sql \
+	&& unzip -d $(DATA_DIR_SRC) $< ri000012018_2020Style.pl \
+	&& sqlite3 -csv -separator '|' $(SQLITE_DB_PATH) ".import $(DATA_DIR_SRC)/ri000012018_2020Style.pl pl94171_2020_00001" \
+	&& rm -f $(DATA_DIR_SRC)/ri000012018_2020Style.pl \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM pl94171_2020_00001;" > $@
+
+# Load file 2
+$(TABLE_PROXY_DIR)/pl94171_2020_00002: $(DATA_DIR_SRC)/ri2018_2020Style.pl.zip | $(TABLE_PROXY_DIR)
+	sqlite3 $(SQLITE_DB_PATH) "DROP TABLE IF EXISTS pl94171_2020_00002;" \
+	&& sqlite3 $(SQLITE_DB_PATH) < etl/create_table_pl94171_2020_00002.sql \
+	&& unzip -d $(DATA_DIR_SRC) $< ri000022018_2020Style.pl \
+	&& sqlite3 -csv -separator '|' $(SQLITE_DB_PATH) ".import $(DATA_DIR_SRC)/ri000022018_2020Style.pl pl94171_2020_00002" \
+	&& rm -f $(DATA_DIR_SRC)/ri000022018_2020Style.pl \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM pl94171_2020_00002;" > $@
+
+# Load file 3
+$(TABLE_PROXY_DIR)/pl94171_2020_00003: $(DATA_DIR_SRC)/ri2018_2020Style.pl.zip | $(TABLE_PROXY_DIR)
+	sqlite3 $(SQLITE_DB_PATH) "DROP TABLE IF EXISTS pl94171_2020_00003;" \
+	&& sqlite3 $(SQLITE_DB_PATH) < etl/create_table_pl94171_2020_00003.sql \
+	&& unzip -d $(DATA_DIR_SRC) $< ri000032018_2020Style.pl \
+	&& sqlite3 -csv -separator '|' $(SQLITE_DB_PATH) ".import $(DATA_DIR_SRC)/ri000032018_2020Style.pl pl94171_2020_00003" \
+	&& rm -f $(DATA_DIR_SRC)/ri000032018_2020Style.pl \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM pl94171_2020_00003;" > $@
+
 # Create directories for data
 
 # Create the directory that will hold the text files that
