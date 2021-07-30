@@ -54,6 +54,9 @@ Reproducibly create a repository of frequently-used census data.
 - 2010 Census Summary File 1
   - URL: https://www.census.gov/data/datasets/2010/dec/summary-file-1.html
   - Agency: U.S. Census Bureau
+  - Documentation: https://www2.census.gov/programs-surveys/decennial/2010/technical-documentation/complete-tech-docs/summary-file/sf1.pdf
+  - This was really helpful in providing SQL for creating tables: https://sproke.blogspot.com/2012/01/importing-2010-sf1-census-in-postgresql.html
+  - I found the [API variable documentation](https://api.census.gov/data/2010/dec/sf1/variables.html), particularly the pages for groups (for example this one for [P3](https://api.census.gov/data/2010/dec/sf1/groups/P3.html)) to be helpful for understanding the variable names.
 
 - Prototype P.L. 94-171 Redistricting Data Summary File
   - URL: https://www.census.gov/programs-surveys/decennial-census/about/rdo/program-management.html#P3
