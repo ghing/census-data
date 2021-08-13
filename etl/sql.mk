@@ -215,40 +215,42 @@ $(TABLE_PROXY_DIR)/zctas_2020: $(DATA_DIR_SRC)/tl_2020_us_zcta510.shp | $(TABLE_
 
 # Load Prototype P.L. 94-171 Redistricting Data Summary File
 
+-rw-rw-r--  3.0 unx  9271054 tx defN 21-Jul-26 08:36 az000032020.pl
+
 # Load geographic header
-$(TABLE_PROXY_DIR)/pl94171_2020_geo: $(DATA_DIR_SRC)/ri2018_2020Style.pl.zip | $(TABLE_PROXY_DIR)
+$(TABLE_PROXY_DIR)/pl94171_2020_geo: $(DATA_DIR_SRC)/az2020.pl.zip | $(TABLE_PROXY_DIR)
 	sqlite3 $(SQLITE_DB_PATH) "DROP TABLE IF EXISTS pl94171_2020_geo;" \
 	&& sqlite3 $(SQLITE_DB_PATH) < etl/create_table_pl94171_2020_geo.sql \
-	&& unzip -d $(DATA_DIR_SRC) $< rigeo2018_2020Style.pl \
-	&& sqlite3 -csv -separator '|' $(SQLITE_DB_PATH) ".import $(DATA_DIR_SRC)/rigeo2018_2020Style.pl pl94171_2020_geo" \
-	&& rm -f $(DATA_DIR_SRC)/rigeo2018_2020Style.pl \
+	&& unzip -d $(DATA_DIR_SRC) $(DATA_DIR_SRC)/az2020.pl.zip azgeo2020.pl \
+	&& sqlite3 -csv -separator '|' $(SQLITE_DB_PATH) ".import $(DATA_DIR_SRC)/azgeo2020.pl pl94171_2020_geo" \
+	&& rm -f $(DATA_DIR_SRC)/azgeo2020.pl \
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM pl94171_2020_geo;" > $@
 
 # Load file 1
-$(TABLE_PROXY_DIR)/pl94171_2020_00001: $(DATA_DIR_SRC)/ri2018_2020Style.pl.zip | $(TABLE_PROXY_DIR)
+$(TABLE_PROXY_DIR)/pl94171_2020_00001: $(DATA_DIR_SRC)/az2020.pl.zip | $(TABLE_PROXY_DIR)
 	sqlite3 $(SQLITE_DB_PATH) "DROP TABLE IF EXISTS pl94171_2020_00001;" \
 	&& sqlite3 $(SQLITE_DB_PATH) < etl/create_table_pl94171_2020_00001.sql \
-	&& unzip -d $(DATA_DIR_SRC) $< ri000012018_2020Style.pl \
-	&& sqlite3 -csv -separator '|' $(SQLITE_DB_PATH) ".import $(DATA_DIR_SRC)/ri000012018_2020Style.pl pl94171_2020_00001" \
-	&& rm -f $(DATA_DIR_SRC)/ri000012018_2020Style.pl \
+	&& unzip -d $(DATA_DIR_SRC) $(DATA_DIR_SRC)/az2020.pl.zip az000012020.pl \
+	&& sqlite3 -csv -separator '|' $(SQLITE_DB_PATH) ".import $(DATA_DIR_SRC)/az000012020.pl pl94171_2020_00001" \
+	&& rm -f $(DATA_DIR_SRC)/az000012020.pl \
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM pl94171_2020_00001;" > $@
 
 # Load file 2
-$(TABLE_PROXY_DIR)/pl94171_2020_00002: $(DATA_DIR_SRC)/ri2018_2020Style.pl.zip | $(TABLE_PROXY_DIR)
+$(TABLE_PROXY_DIR)/pl94171_2020_00002: $(DATA_DIR_SRC)/az2020.pl.zip | $(TABLE_PROXY_DIR)
 	sqlite3 $(SQLITE_DB_PATH) "DROP TABLE IF EXISTS pl94171_2020_00002;" \
 	&& sqlite3 $(SQLITE_DB_PATH) < etl/create_table_pl94171_2020_00002.sql \
-	&& unzip -d $(DATA_DIR_SRC) $< ri000022018_2020Style.pl \
-	&& sqlite3 -csv -separator '|' $(SQLITE_DB_PATH) ".import $(DATA_DIR_SRC)/ri000022018_2020Style.pl pl94171_2020_00002" \
-	&& rm -f $(DATA_DIR_SRC)/ri000022018_2020Style.pl \
+	&& unzip -d $(DATA_DIR_SRC) $(DATA_DIR_SRC)/az2020.pl.zip az000022020.pl \
+	&& sqlite3 -csv -separator '|' $(SQLITE_DB_PATH) ".import $(DATA_DIR_SRC)/az000022020.pl pl94171_2020_00002" \
+	&& rm -f $(DATA_DIR_SRC)/az000022020.pl \
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM pl94171_2020_00002;" > $@
 
 # Load file 3
-$(TABLE_PROXY_DIR)/pl94171_2020_00003: $(DATA_DIR_SRC)/ri2018_2020Style.pl.zip | $(TABLE_PROXY_DIR)
+$(TABLE_PROXY_DIR)/pl94171_2020_00003: $(DATA_DIR_SRC)/az2020.pl.zip | $(TABLE_PROXY_DIR)
 	sqlite3 $(SQLITE_DB_PATH) "DROP TABLE IF EXISTS pl94171_2020_00003;" \
 	&& sqlite3 $(SQLITE_DB_PATH) < etl/create_table_pl94171_2020_00003.sql \
-	&& unzip -d $(DATA_DIR_SRC) $< ri000032018_2020Style.pl \
-	&& sqlite3 -csv -separator '|' $(SQLITE_DB_PATH) ".import $(DATA_DIR_SRC)/ri000032018_2020Style.pl pl94171_2020_00003" \
-	&& rm -f $(DATA_DIR_SRC)/ri000032018_2020Style.pl \
+	&& unzip -d $(DATA_DIR_SRC) $(DATA_DIR_SRC)/az2020.pl.zip az000032020.pl \
+	&& sqlite3 -csv -separator '|' $(SQLITE_DB_PATH) ".import $(DATA_DIR_SRC)/az000032020.pl pl94171_2020_00003" \
+	&& rm -f $(DATA_DIR_SRC)/az000032020.pl  \
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM pl94171_2020_00003;" > $@
 
 # Create a view for the commonly used columns
