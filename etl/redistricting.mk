@@ -1,6 +1,8 @@
 # ETL pipeline for P.L. 94-171 redistricting data
 
-# Download the Prototype P.L. 94-171 Redistricting Data Summary File
-# See https://www.census.gov/programs-surveys/decennial-census/about/rdo/program-management.html#P3
-$(DATA_DIR_SRC)/ri2018_2020Style.pl.zip: | $(DATA_DIR_SRC)
-	wget -O $@ https://www2.census.gov/programs-surveys/decennial/rdo/datasets/2018/ri2018_2020Style.pl.zip
+# Download the 2020 P.L. 94-171 Redistricting Data Summary File data (legacy format)
+# See https://www.census.gov/programs-surveys/decennial-census/about/rdo/summary-files.html
+
+# Arizona
+$(DATA_DIR_SRC)/az2020.pl.zip: | $(DATA_DIR_SRC)
+	wget -O $@ https://www2.census.gov/programs-surveys/decennial/2020/data/01-Redistricting_File--PL_94-171/Arizona/az2020.pl.zip
