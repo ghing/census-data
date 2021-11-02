@@ -273,3 +273,9 @@ However, PostGIS remains the most widely-supported and robust spatial database p
 - [Census Regions and Divisions of the United States](https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf)
 - [Hierarchy Diagrams](https://www.census.gov/programs-surveys/geography/guidance/hierarchy.html)
   - ["The spine"](https://www2.census.gov/geo/pdfs/reference/geodiagram.pdf)
+
+### Suppression of ACS tables for smaller geographies
+
+Some tables, such as [B16001](https://censusreporter.org/tables/B16001/) aren't available for smaller geographies such as ZCTAs or tracts. However, some tables' data at those geographies [may have been available in the past](https://www.census.gov/programs-surveys/acs/technical-documentation/user-notes/2017-02.html). For example, table B16001 is available at the tract level in the 2015 5-year estimates. h/t Ryan Pitts for this information.
+
+Joe Germuska also told me, "more generally, Census specifically disclaims certain geography classes (summary levels) for certain tables, but only documents it in Excel files." You can find an example of these Excel files in the [technical documentation for the 2019 ACS products](https://www2.census.gov/programs-surveys/acs/summary_file/2019/documentation/tech_docs/).
