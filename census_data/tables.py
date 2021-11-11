@@ -136,3 +136,156 @@ class ResponseRate(NonACSBaseTableConfig):
             return self.FIELD_TYPES_2010
 
         return self.FIELD_TYPES_2020
+
+
+@register
+class Occupation(BaseTableConfig):
+    """Sex by Occupation for the Civilian Employed Population 16 Years and Over"""
+
+    PROCESSED_TABLE_NAME = "occupation"
+    UNIVERSE = "civilian employed population 16 years and over"
+    # Using the consolidated version of the table because the ACS 5-year
+    # release does not include the B24010/B24020 tables. To analyze occupation
+    # data for smaller geographies, you must use the C24010/C24020 table.
+    RAW_TABLE_NAME = "C24010"
+    # Note that these categories are nested
+    RAW_FIELD_CROSSWALK = collections.OrderedDict(
+        {
+            "001": "universe",
+            # Male
+            "002": "male_total",
+            # Male: Management, business, science, and arts occupations:
+            "003": "male_management_business_science_arts",
+            # Male: Management, business, science, and arts occupations:
+            #   Management, business, and financial occupations
+            "004": "male_management_business_financial",
+            "005": "male_management",
+            "006": "male_business_financial_operations",
+            # Male: Management, business, science, and arts occupations:
+            #   Computer, engineering, and science occupations
+            "007": "male_computer_engineering_science",
+            "008": "male_computer_mathematical",
+            "009": "male_architecture_engineering",
+            "010": "male_life_physical_social_science",
+            # Male: Management, business, science, and arts occupations:
+            #   Education, legal, community service, arts, and media occupations
+            "011": "male_education_legal_community_service_arts_media",
+            "012": "male_community_social_service",
+            "013": "male_legal",
+            "014": "male_educational_instruction_library",
+            "015": "male_arts_design_entertainment_sports_media",
+            # Male: Management, business, science, and arts occupations:
+            #   Healthcare practitioners and technical occupations
+            "016": "male_healthcare_practitioners_technical",
+            "017": "male_health_diagnosing_treating_practitioners_other_technical",
+            "018": "male_health_technologists_technicians",
+            # Male: Service occupations
+            "019": "male_service",
+            "020": "male_healthcare_support",
+            # Male: Service occupations: Protective service occupations
+            "021": "male_protective_service",
+            "022": "male_firefighting_prevention_other_protective_service_including_supervisors",
+            "023": "male_law_enforcement_including_supervisors",
+            "024": "male_food_preparation_and_serving",
+            "025": "male_building_and_grounds_cleaning_and_maintenance",
+            "026": "male_personal_care_and_service_occupations",
+            # Male: Service occupations: Sales and office occupations
+            "027": "male_sales_and_office",
+            "028": "male_sales_and_related",
+            "029": "male_office_administrative_support",
+            # Male: Service occupations:
+            #   Natural resources, construction, and maintenance occupations
+            "030": "male_natural_resources_construction_maintenance",
+            "031": "male_farming_fishing_forestry",
+            "032": "male_construction_extraction",
+            "033": "male_installation_maintenance_repair",
+            # Male: Service occupations:
+            #   Production, transportation, and material moving occupations
+            "034": "male_production_transportation_material_moving",
+            "035": "male_production",
+            "036": "male_transportation",
+            "037": "male_material_moving",
+            # The hierarchy repeats for women
+            "038": "female_total",
+            "039": "female_management_business_science_arts",
+            "040": "female_management_business_financial",
+            "041": "female_management",
+            "042": "female_business_financial_operations",
+            "043": "female_computer_engineering_science",
+            "044": "female_computer_mathematical",
+            "045": "female_architecture_engineering",
+            "046": "female_life_physical_social_science",
+            "047": "female_education_legal_community_service_arts_media",
+            "048": "female_community_social_service",
+            "049": "female_legal",
+            "050": "female_educational_instruction_library",
+            "051": "female_arts_design_entertainment_sports_media",
+            "052": "female_healthcare_practitioners_technical",
+            "053": "female_health_diagnosing_treating_practitioners_other_technical",
+            "054": "female_health_technologists_technicians",
+            "055": "female_service",
+            "056": "female_healthcare_support",
+            "057": "female_protective_service",
+            "058": "female_firefighting_prevention_other_protective_service_including_supervisors",
+            "059": "female_law_enforcement_including_supervisors",
+            "060": "female_food_preparation_and_serving",
+            "061": "female_building_and_grounds_cleaning_and_maintenance",
+            "062": "female_personal_care_and_service_occupations",
+            "063": "female_sales_and_office",
+            "064": "female_sales_and_related",
+            "065": "female_office_administrative_support",
+            "066": "female_natural_resources_construction_maintenance",
+            "067": "female_farming_fishing_forestry",
+            "068": "female_construction_extraction",
+            "069": "female_installation_maintenance_repair",
+            "070": "female_production_transportation_material_moving",
+            "071": "female_production",
+            "072": "female_transportation",
+            "073": "female_material_moving",
+        }
+    )
+
+    def process(self, df):  # pylint: disable=no-self-use
+        """Calculates totals for both genders together"""
+        # Calculate totals for both genders together
+        groups = [
+            "management_business_science_arts",
+            "management_business_financial",
+            "management",
+            "business_financial_operations",
+            "computer_engineering_science",
+            "computer_mathematical",
+            "architecture_engineering",
+            "life_physical_social_science",
+            "education_legal_community_service_arts_media",
+            "community_social_service",
+            "legal",
+            "educational_instruction_library",
+            "arts_design_entertainment_sports_media",
+            "healthcare_practitioners_technical",
+            "health_diagnosing_treating_practitioners_other_technical",
+            "health_technologists_technicians",
+            "service",
+            "healthcare_support",
+            "protective_service",
+            "firefighting_prevention_other_protective_service_including_supervisors",
+            "law_enforcement_including_supervisors",
+            "food_preparation_and_serving",
+            "building_and_grounds_cleaning_and_maintenance",
+            "personal_care_and_service_occupations",
+            "sales_and_office",
+            "sales_and_related",
+            "office_administrative_support",
+            "natural_resources_construction_maintenance",
+            "farming_fishing_forestry",
+            "construction_extraction",
+            "installation_maintenance_repair",
+            "production_transportation_material_moving",
+            "production",
+            "transportation",
+            "material_moving",
+        ]
+        for grp in groups:
+            df[f"total_{grp}"] = df[f"male_{grp}"] + df[f"female_{grp}"]
+
+        return df

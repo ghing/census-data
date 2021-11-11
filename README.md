@@ -150,6 +150,14 @@ Download Table B10063: Households With Grandparents Living With Own Grandchildre
 make data/processed/acs5_2019_grandparentslivingwithgrandchildren_zctas.csv
 ```
 
+Download Table C24010: Sex by Occupation for the Civilian Population:
+
+```
+make data/processed/acs5_2019_occupation_places.csv 
+make data/processed/acs5_2019_occupation_counties.csv
+make data/processed/acs5_2019_occupation_states.csv
+```
+
 ### Gazeteer files
 
 Download county gazeteer files:
