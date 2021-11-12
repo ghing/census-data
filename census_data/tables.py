@@ -186,21 +186,20 @@ class Occupation(BaseTableConfig):
             "021": "male_protective_service",
             "022": "male_firefighting_prevention_other_protective_service_including_supervisors",
             "023": "male_law_enforcement_including_supervisors",
+            # Male: Service occupations
             "024": "male_food_preparation_and_serving",
             "025": "male_building_and_grounds_cleaning_and_maintenance",
             "026": "male_personal_care_and_service_occupations",
-            # Male: Service occupations: Sales and office occupations
+            # Male: Sales and office occupations
             "027": "male_sales_and_office",
             "028": "male_sales_and_related",
             "029": "male_office_administrative_support",
-            # Male: Service occupations:
-            #   Natural resources, construction, and maintenance occupations
+            # Male: Natural resources, construction, and maintenance occupations
             "030": "male_natural_resources_construction_maintenance",
             "031": "male_farming_fishing_forestry",
             "032": "male_construction_extraction",
             "033": "male_installation_maintenance_repair",
-            # Male: Service occupations:
-            #   Production, transportation, and material moving occupations
+            # Male: Production, transportation, and material moving occupations
             "034": "male_production_transportation_material_moving",
             "035": "male_production",
             "036": "male_transportation",
