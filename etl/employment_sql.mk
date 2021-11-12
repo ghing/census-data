@@ -334,7 +334,8 @@ $(TABLE_PROXY_DIR)/acs5_2019_occupation_places: $(DATA_DIR_PROCESSED)/acs5_2019_
 	--type total_production_transportation_material_moving float \
 	--type total_production float \
 	--type total_transportation float \
-	--type total_material_moving float
+	--type total_material_moving float \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
 $(TABLE_PROXY_DIR)/acs5_2019_occupation_counties: $(DATA_DIR_PROCESSED)/acs5_2019_occupation_counties.csv | $(TABLE_PROXY_DIR)
 	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
@@ -670,7 +671,8 @@ $(TABLE_PROXY_DIR)/acs5_2019_occupation_counties: $(DATA_DIR_PROCESSED)/acs5_201
 	--type total_production_transportation_material_moving float \
 	--type total_production float \
 	--type total_transportation float \
-	--type total_material_moving float
+	--type total_material_moving float \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
 $(TABLE_PROXY_DIR)/acs5_2019_occupation_states: $(DATA_DIR_PROCESSED)/acs5_2019_occupation_states.csv | $(TABLE_PROXY_DIR)
 	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
@@ -1006,4 +1008,5 @@ $(TABLE_PROXY_DIR)/acs5_2019_occupation_states: $(DATA_DIR_PROCESSED)/acs5_2019_
 	--type total_production_transportation_material_moving float \
 	--type total_production float \
 	--type total_transportation float \
-	--type total_material_moving float
+	--type total_material_moving float \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
