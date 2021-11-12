@@ -1010,3 +1010,114 @@ $(TABLE_PROXY_DIR)/acs5_2019_occupation_states: $(DATA_DIR_PROCESSED)/acs5_2019_
 	--type total_transportation float \
 	--type total_material_moving float \
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
+
+$(TABLE_PROXY_DIR)/acs5_2019_employmentstatus_places: $(DATA_DIR_PROCESSED)/acs5_2019_employmentstatus_places.csv | $(TABLE_PROXY_DIR)
+	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
+	--type geoid text \
+	--type name text \
+	--type universe float \
+	--type universe_annotation text \
+	--type universe_moe float \
+	--type universe_moe_annotation text \
+	--type in_labor_force float \
+	--type in_labor_force_annotation text \
+	--type in_labor_force_moe float \
+	--type in_labor_force_moe_annotation text \
+	--type civilian float \
+	--type civilian_annotation text \
+	--type civilian_moe float \
+	--type civilian_moe_annotation text \
+	--type civilian_employed float \
+	--type civilian_employed_annotation text \
+	--type civilian_employed_moe float \
+	--type civilian_employed_moe_annotation text \
+	--type civilian_unemployed float \
+	--type civilian_unemployed_annotation text \
+	--type civilian_unemployed_moe float \
+	--type civilian_unemployed_moe_annotation text \
+	--type armed_forces float \
+	--type armed_forces_annotation text \
+	--type armed_forces_moe float \
+	--type armed_forces_moe_annotation text \
+	--type not_in_labor_force float \
+	--type not_in_labor_force_annotation text \
+	--type not_in_labor_force_moe float \
+	--type not_in_labor_force_moe_annotation text \
+	--type state float \
+	--type place float \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
+
+$(TABLE_PROXY_DIR)/acs5_2019_employmentstatus_counties: $(DATA_DIR_PROCESSED)/acs5_2019_employmentstatus_counties.csv | $(TABLE_PROXY_DIR)
+	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
+	--type geoid text \
+	--type name text \
+	--type universe float \
+	--type universe_annotation text \
+	--type universe_moe float \
+	--type universe_moe_annotation text \
+	--type in_labor_force float \
+	--type in_labor_force_annotation text \
+	--type in_labor_force_moe float \
+	--type in_labor_force_moe_annotation text \
+	--type civilian float \
+	--type civilian_annotation text \
+	--type civilian_moe float \
+	--type civilian_moe_annotation text \
+	--type civilian_employed float \
+	--type civilian_employed_annotation text \
+	--type civilian_employed_moe float \
+	--type civilian_employed_moe_annotation text \
+	--type civilian_unemployed float \
+	--type civilian_unemployed_annotation text \
+	--type civilian_unemployed_moe float \
+	--type civilian_unemployed_moe_annotation text \
+	--type armed_forces float \
+	--type armed_forces_annotation text \
+	--type armed_forces_moe float \
+	--type armed_forces_moe_annotation text \
+	--type not_in_labor_force float \
+	--type not_in_labor_force_annotation text \
+	--type not_in_labor_force_moe float \
+	--type not_in_labor_force_moe_annotation text \
+	--type state float \
+	--type place float \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
+
+$(TABLE_PROXY_DIR)/acs5_2019_employmentstatus_states: $(DATA_DIR_PROCESSED)/acs5_2019_employmentstatus_states.csv | $(TABLE_PROXY_DIR)
+	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
+	--type geoid text \
+	--type name text \
+	--type universe float \
+	--type universe_annotation text \
+	--type universe_moe float \
+	--type universe_moe_annotation text \
+	--type in_labor_force float \
+	--type in_labor_force_annotation text \
+	--type in_labor_force_moe float \
+	--type in_labor_force_moe_annotation text \
+	--type civilian float \
+	--type civilian_annotation text \
+	--type civilian_moe float \
+	--type civilian_moe_annotation text \
+	--type civilian_employed float \
+	--type civilian_employed_annotation text \
+	--type civilian_employed_moe float \
+	--type civilian_employed_moe_annotation text \
+	--type civilian_unemployed float \
+	--type civilian_unemployed_annotation text \
+	--type civilian_unemployed_moe float \
+	--type civilian_unemployed_moe_annotation text \
+	--type armed_forces float \
+	--type armed_forces_annotation text \
+	--type armed_forces_moe float \
+	--type armed_forces_moe_annotation text \
+	--type not_in_labor_force float \
+	--type not_in_labor_force_annotation text \
+	--type not_in_labor_force_moe float \
+	--type not_in_labor_force_moe_annotation text \
+	--type state float \
+	--type place float \
+	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@

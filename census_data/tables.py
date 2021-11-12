@@ -11,6 +11,7 @@ https://github.com/datadesk/census-data-downloader/tree/master/census_data_downl
 import collections
 
 from census_data_downloader.core.tables import BaseTableConfig
+from census_data_downloader.tables.employmentstatus import EmploymentStatusDownloader
 from census_data_downloader.core.decorators import register
 import numpy as np
 
@@ -288,3 +289,11 @@ class Occupation(BaseTableConfig):
             df[f"total_{grp}"] = df[f"male_{grp}"] + df[f"female_{grp}"]
 
         return df
+
+
+@register
+class EmploymentStatus(EmploymentStatusDownloader):
+    """"Table B23025: Employment Status"""
+
+    # HACK: Manually update the year list because the base package is out-of-date
+    YEAR_LIST = (2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011)

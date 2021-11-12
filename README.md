@@ -158,6 +158,15 @@ make data/processed/acs5_2019_occupation_counties.csv
 make data/processed/acs5_2019_occupation_states.csv
 ```
 
+Download Table B23025: Employment Status:
+
+```
+make data/processed/acs5_2019_employmentstatus_places.csv 
+make data/processed/acs5_2019_employmentstatus_counties.csv 
+make data/processed/acs5_2019_employmentstatus_states.csv
+```
+
+
 ### Gazeteer files
 
 Download county gazeteer files:
