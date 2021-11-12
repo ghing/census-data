@@ -31,6 +31,7 @@ setup(
         downloadacs5bg=census_data.cli:download_acs5_blockgroup
         mycensusdatadownloader=census_data.cli:cmd
         mycensusmapdownloader=census_data.map.cli:cmd
+        createsqliteloadcmd=census_data.cli:create_sqlite_load_cmd
     """,
     classifiers=[
         "Development Status :: 5 - Production/Stable",

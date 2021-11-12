@@ -196,6 +196,48 @@ def download_acs5_blockgroup(table, data_dir="./", year=None, force=False):
     downloader.process()
 
 
+def get_column_type(col_name):
+    """
+    Returns column type based on a cleaned ACS column name.
+
+    Args:
+        col_name (str): Column name
+
+    Returns:
+        A string representing the column type that can be used as a `--type`
+        option to a `sqlite-utils transform` command.
+
+    """
+    if col_name in ("geoid", "name") or col_name.endswith("_annotation"):
+        return "text"
+
+    return "float"
+
+
+@click.command()
+@click.argument("input_csv", type=click.File(mode="r"))
+@click.argument("database_path", type=click.Path())
+@click.option("--table-name", "-t")
+def create_sqlite_load_cmd(input_csv, database_path, table_name=None):
+    """
+    Generates a set of commands to load a CSV of ACS data into a SQLite database
+    """
+    if table_name is None:
+        table_name = Path(input_csv.name).name.replace(".csv", "")
+
+    data = pd.read_csv(input_csv, nrows=20)
+    type_options = "\n".join(
+        [f"  --type {c} {get_column_type(c)} \\" for c in data.columns]
+    )
+    load_cmd = (
+        f"sqlite-utils insert --csv --pk geoid {database_path} {table_name} {input_csv.name} \\\n"
+        f"&& sqlite-utils transform {database_path} {table_name} \\\n"
+        f"{type_options}"
+    )
+
+    print(load_cmd)
+
+
 # Below this line is copied from census_data_downloader.cli
 # This essentially creates a parallel version of the `censusdatadownloader`
 # command with custom tables added.

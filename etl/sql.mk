@@ -16,6 +16,8 @@ TABLE_PROXY_DIR := $(DATA_DIR_PROCESSED)/db_tables
 
 .PHONY: clean_table_proxy clean_sql_db
 
+include etl/employment_sql.mk
+
 # Load ACS estimates
 
 # Table B03002: Hispanic or Latino Origin by Race, tracts
