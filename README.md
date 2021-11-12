@@ -274,6 +274,8 @@ I've implemented an experimental feature that includes make rules for loading co
 
 However, PostGIS remains the most widely-supported and robust spatial database program so it might make sense to eventually add support for PostGIS, or if we run into limitations with Spatialite, switch entirely to PostGIS.
 
+I also made a command, `createsqliteloadcmd` that is part of this package, that outputs a sample `sqlite-utils` command that loads an ACS CSV into the database and sets the correct types for the columns based on the naming convention. This is useful for creating new makefiles for loading CSVs into the SQL database.
+
 ## Data notes
 
 ### Useful references
