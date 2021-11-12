@@ -166,6 +166,13 @@ make data/processed/acs5_2019_employmentstatus_counties.csv
 make data/processed/acs5_2019_employmentstatus_states.csv
 ```
 
+Download Table C24080: Sex by Class of Worker for the Civilian Population:
+
+```
+make data/processed/acs5_2019_classofworker_places.csv 
+make data/processed/acs5_2019_classofworker_counties.csv 
+make data/processed/acs5_2019_classofworker_states.csv
+```
 
 ### Gazeteer files
 

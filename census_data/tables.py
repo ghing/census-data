@@ -11,8 +11,9 @@ https://github.com/datadesk/census-data-downloader/tree/master/census_data_downl
 import collections
 
 from census_data_downloader.core.tables import BaseTableConfig
-from census_data_downloader.tables.employmentstatus import EmploymentStatusDownloader
 from census_data_downloader.core.decorators import register
+from census_data_downloader.tables.classofworker import ClassOfWorkerDownloader
+from census_data_downloader.tables.employmentstatus import EmploymentStatusDownloader
 import numpy as np
 
 from census_data.core.tables import NonACSBaseTableConfig
@@ -297,3 +298,26 @@ class EmploymentStatus(EmploymentStatusDownloader):
 
     # HACK: Manually update the year list because the base package is out-of-date
     YEAR_LIST = (2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011)
+
+
+@register
+class ClassOfWorker(ClassOfWorkerDownloader):
+    """Table C24080: Sex by Class of Worker for the Civilian Population"""
+
+    def process(self, df):  # pylint: disable=no-self-use
+        """Calculates totals for both genders together"""
+        groups = [
+            "private_for_profit_wage_and_salary",
+            "employee_of_private_company",
+            "selfemployed_in_own_incorporated_business",
+            "private_not_for_profit_wage_and_salary",
+            "local_government",
+            "state_government",
+            "federal_government",
+            "selfemployed_in_own_not_incorporated_business",
+            "unpaid_family_workers",
+        ]
+        for grp in groups:
+            df[f"total_{grp}"] = df[f"male_{grp}"] + df[f"female_{grp}"]
+
+        return df

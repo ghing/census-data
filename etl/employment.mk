@@ -22,3 +22,13 @@ $(DATA_DIR_PROCESSED)/acs5_2019_employmentstatus_counties.csv: | $(DATA_DIR_PROC
 
 $(DATA_DIR_PROCESSED)/acs5_2019_employmentstatus_states.csv: | $(DATA_DIR_PROCESSED)
 	pipenv run mycensusdatadownloader --data-dir $(DATA_DIR) --year 2019 employmentstatus states 
+
+# Table C24080: Sex by Class of Worker for the Civilian Population
+$(DATA_DIR_PROCESSED)/acs5_2019_classofworker_places.csv: | $(DATA_DIR_PROCESSED)
+	pipenv run mycensusdatadownloader --data-dir $(DATA_DIR) --year 2019 classofworker places 
+
+$(DATA_DIR_PROCESSED)/acs5_2019_classofworker_counties.csv: | $(DATA_DIR_PROCESSED)
+	pipenv run mycensusdatadownloader --data-dir $(DATA_DIR) --year 2019 classofworker counties 
+
+$(DATA_DIR_PROCESSED)/acs5_2019_classofworker_states.csv: | $(DATA_DIR_PROCESSED)
+	pipenv run mycensusdatadownloader --data-dir $(DATA_DIR) --year 2019 classofworker states 
