@@ -166,6 +166,12 @@ make data/processed/acs5_2019_employmentstatus_counties.csv
 make data/processed/acs5_2019_employmentstatus_states.csv
 ```
 
+Download Table C16001: Language Spoken at Home
+
+```
+make data/processed/acs5_2019_languageshortform_tracts.csv
+```
+
 Download Table C24080: Sex by Class of Worker for the Civilian Population:
 
 ```
@@ -281,7 +287,7 @@ It seems like a common task for this data will be to join data together, whether
 Some of the most common data tables that are downloaded and processed using make rules that use `censusdatadownloader` or `censusmapdownloader` can be loaded into a SQL database using a command like:
 
 ```
-data/processed/db_tables/counties_2020
+make data/processed/db_tables/counties_2020
 ```
 
 See the makefile `etl/sql.mk` for supported data.

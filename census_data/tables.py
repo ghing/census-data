@@ -14,6 +14,7 @@ from census_data_downloader.core.tables import BaseTableConfig
 from census_data_downloader.core.decorators import register
 from census_data_downloader.tables.classofworker import ClassOfWorkerDownloader
 from census_data_downloader.tables.employmentstatus import EmploymentStatusDownloader
+from census_data_downloader.tables.language import LanguageShortFormDownloader
 import numpy as np
 
 from census_data.core.tables import NonACSBaseTableConfig
@@ -321,3 +322,16 @@ class ClassOfWorker(ClassOfWorkerDownloader):
             df[f"total_{grp}"] = df[f"male_{grp}"] + df[f"female_{grp}"]
 
         return df
+
+
+@register
+class LanguageShortForm(LanguageShortFormDownloader):
+    """Table C16001: Language Spoken at Home"""
+
+    # HACK: Manually update the year list because the base package is out-of-date
+    YEAR_LIST = (
+        2019,
+        2018,
+        2017,
+        2016,
+    )

@@ -21,6 +21,7 @@ include etl/race.mk
 include etl/popest.mk
 include etl/boundaries.mk
 include etl/employment.mk
+include etl/language.mk
 include etl/gazetteer.mk
 include etl/seniors.mk
 include etl/redistricting.mk
