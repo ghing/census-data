@@ -39,6 +39,20 @@ class NonACSBaseTableConfig(BaseTableConfig):
         return geotypes.NonACSStatesDownloader
 
     @decorators.downloader
+    def download_counties(self):
+        """
+        Download data for all states.
+        """
+        return geotypes.NonACSCountiesDownloader
+
+    @decorators.downloader
+    def download_places(self):
+        """
+        Download data for all states.
+        """
+        return geotypes.NonACSPlacesDownloader
+
+    @decorators.downloader
     def download_tracts(self):
         """
         Download data for all Census tracts in the provided state.

@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 pylint = "*"
 pre-commit = "*"
+black = "*"
 
 [packages]
 prompt-toolkit = ">=2.0.4"
@@ -21,3 +22,6 @@ census-map-downloader = {ref = "8-support-year", git = "https://github.com/ghing
 
 [requires]
 python_version = "3.9"
+
+[pipenv]
+allow_prereleases = true

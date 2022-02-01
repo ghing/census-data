@@ -2,7 +2,6 @@
 
 Reusable Census data that can be useful to multiple projects.
 
-
 When possible, this project uses [census-data-downloader](https://github.com/datadesk/census-data-downloader/) and [census-map-downloader](https://github.com/datadesk/census-map-downloader) to download data.
 
 *Created by Geoff Hing)*
@@ -28,6 +27,13 @@ Reproducibly create a repository of frequently-used census data.
 - Decennial Census Self-Response Rates
   - URL: https://www.census.gov/data/developers/data-sets/decennial-response-rates.2020.html
   - Agency: U.S. Census Bureau
+
+- Equal Employment Opportunity Tabulation
+  - URL: https://www.census.gov/topics/employment/equal-employment-opportunity-tabulation.html
+  - Agency: U.S. Census Bureau
+  - Technical documentation: https://www2.census.gov/EEO_2014_2018/EEO_FTP_Site_Documentation/ACS2014_2018_EEO_FTP_TECHDOC_Version3.0.pdf
+  - Reference spreadsheet: https://www2.census.gov/EEO_2014_2018/EEO_FTP_Site_Documentation/EEOTabulation2014-2018-Documentation-1.31.2022.xlsx
+    - This contains descriptions of the occupation codes.
 
 - Gazeteer Files
   - URL: https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.html
@@ -94,7 +100,6 @@ Other data journalism (or adjacent) resources using `make`:
 - [Making Data, the DataMade Way](https://github.com/datamade/data-making-guidelines)
 - [Why Use Make](https://bost.ocks.org/mike/make/) (Mike Bostock)
 
-
 ### Project setup instructions
 
 After cloning the git repo, and changing directory to the project directory, install the Python dependencies:
@@ -118,7 +123,6 @@ pipenv run pre-commit install
 ### Census data downloader
 
 Most of the heavy lifting is done by the L.A. Times Data Desk's [census-data-downloader](https://github.com/datadesk/census-data-downloader/) tool. When we need to download something that's not supported by this tool, we still try to follow the tool's conventions in terms of file naming and interface to command-line tools.
-
 
 ## Downloading data
 
@@ -178,6 +182,17 @@ Download Table C24080: Sex by Class of Worker for the Civilian Population:
 make data/processed/acs5_2019_classofworker_places.csv 
 make data/processed/acs5_2019_classofworker_counties.csv 
 make data/processed/acs5_2019_classofworker_states.csv
+```
+
+### Equal Employment Opportunity Tabulation
+
+Download table ALL1W: Detailed Census Occupation by Sex and Race/ethnicity for Worksite Geography:
+
+```
+make data/processed/eeo_2018_occupation_by_sex_race_for_worksite_geo_nationwide.csv
+make data/processed/eeo_2018_occupation_by_sex_race_for_worksite_geo_states.csv
+make data/processed/eeo_2018_occupation_by_sex_race_for_worksite_geo_counties.csv
+make data/processed/eeo_2018_occupation_by_sex_race_for_worksite_geo_places.csv
 ```
 
 ### Gazeteer files

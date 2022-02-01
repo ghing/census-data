@@ -335,3 +335,121 @@ class LanguageShortForm(LanguageShortFormDownloader):
         2017,
         2016,
     )
+
+
+@register
+class EEOALL1W(NonACSBaseTableConfig):
+    """
+    Equal Employment Opportunity Tabulation Table ALL01W
+
+    See https://www.census.gov/topics/employment/equal-employment-opportunity-tabulation.html
+
+    """
+
+    YEAR_LIST = [
+        2018,
+    ]
+    PROCESSED_TABLE_NAME = "occupation_by_sex_race_for_worksite_geo"
+    UNIVERSE = "civilians employed at work 16 years and over"
+    RAW_TABLE_NAME = "ALL1W"
+    RAW_FIELD_CROSSWALK = collections.OrderedDict(
+        {
+            "EEO": "occupation",
+            # Racial category processed names follow the same conventions as those for table
+            # B03002 in census-data-downloader.
+            # See
+            # https://github.com/datadesk/census-data-downloader/blob/master/census_data_downloader/tables/race.py
+            "C01_001": "universe",
+            "C01_002": "universe_pct",
+            "C01_003": "male",
+            "C01_004": "male_pct",
+            "C01_005": "female",
+            "C01_006": "female_pct",
+            "C02_001": "latino_alone",
+            "C02_002": "latino_alone_pct",
+            "C02_003": "latino_alone_male",
+            "C02_004": "latino_alone_male_pct",
+            "C02_005": "latino_alone_female",
+            "C02_006": "latino_alone_female_pct",
+            "C03_001": "white_alone",
+            "C03_002": "white_alone_pct",
+            "C03_003": "white_alone_male",
+            "C03_004": "white_alone_male_pct",
+            "C03_005": "white_alone_female",
+            "C03_006": "white_alone_female_pct",
+            "C04_001": "black_alone",
+            "C04_002": "black_alone_pct",
+            "C04_003": "black_alone_male",
+            "C04_004": "black_alone_male_pct",
+            "C04_005": "black_alone_female",
+            "C04_006": "black_alone_female_pct",
+            "C05_001": "american_indian_and_alaska_native",
+            "C05_002": "american_indian_and_alaska_native_pct",
+            "C05_003": "american_indian_and_alaska_native_male",
+            "C05_004": "american_indian_and_alaska_native_male_pct",
+            "C05_005": "american_indian_and_alaska_native_female",
+            "C05_006": "american_indian_and_alaska_native_female_pct",
+            "C06_001": "asian_alone",
+            "C06_002": "asian_alone_pct",
+            "C06_003": "asian_alone_male",
+            "C06_004": "asian_alone_male_pct",
+            "C06_005": "asian_alone_female",
+            "C06_006": "asian_alone_female_pct",
+            "C07_001": "native_hawaiian_and_pacific_islander",
+            "C07_002": "native_hawaiian_and_pacific_islander_pct",
+            "C07_003": "native_hawaiian_and_pacific_islander_male",
+            "C07_004": "native_hawaiian_and_pacific_islander_male_pct",
+            "C07_005": "native_hawaiian_and_pacific_islander_female",
+            "C07_006": "native_hawaiian_and_pacific_islander_female_pct",
+            # In the data, this category is labeled as
+            # "Balance of not Hispanic or Latino"
+            "C08_001": "other_or_two_or_more",
+            "C08_002": "other_or_two_or_more_pct",
+            "C08_003": "other_or_two_or_more_male",
+            "C08_004": "other_or_two_or_more_male_pct",
+            "C08_005": "other_or_two_or_more_female",
+            "C08_006": "other_or_two_or_more_female_pct",
+        }
+    )
+
+    def __init__(  # pylint:disable=too-many-arguments
+        self,
+        api_key=None,
+        source="eeo",
+        years=None,
+        data_dir=None,
+        force=False,
+    ):
+        super().__init__(api_key, source, years, data_dir, force)
+
+    def get_raw_field_crosswalk(self, year=None):
+        field_map = collections.OrderedDict({"NAME": "name"})
+        field_suffix_map = {
+            "E": "",
+            "EA": "_annotation",
+            "M": "_moe",
+            "MA": "_moe_annotation",
+        }
+        for field_id, field_name in self.RAW_FIELD_CROSSWALK.items():
+            if field_id == "EEO":
+                field_map[field_id] = field_name
+                continue
+
+            for field_suffix, name_suffix in field_suffix_map.items():
+                full_raw_id = f"EEO{self.RAW_TABLE_NAME}_{field_id}{field_suffix}"
+                processed_name = f"{field_name}{name_suffix}".strip()
+                field_map[full_raw_id] = processed_name
+
+        return field_map
+
+    def get_field_types(self, year=None):  # pylint:disable=unused-argument
+        """Returns the field types"""
+        field_types = {}
+
+        # Use the default behavior for ACS tables since the variables conform
+        # to this convention.
+        for field in self.RAW_FIELD_CROSSWALK.items():
+            if "_" in field and (field.endswith("E") or field.endswith("M")):
+                field_types[field] = np.float64
+
+        return field_types

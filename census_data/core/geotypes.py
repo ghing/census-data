@@ -349,6 +349,7 @@ class NonACSBaseGeoTypeDownloader(BaseGeoTypeDownloader):
         df.rename(columns=field_name_mapper, inplace=True)
 
         # Add a combined GEOID column with a Census unique identifer
+        # pylint: disable-next=unsupported-assignment-operation,no-member
         df["geoid"] = df.apply(self.create_geoid, axis=1)
 
         if hasattr(self.config, "process"):
@@ -421,6 +422,30 @@ class NonACSStatesDownloader(NonACSBaseGeoTypeDownloader):
 
     slug = "states"
     raw_geotype = "state"
+
+
+class NonACSCountiesDownloader(NonACSBaseGeoTypeDownloader):
+    """
+    Download raw data at the county level.
+    """
+
+    slug = "counties"
+    raw_geotype = "county"
+
+    def create_geoid(self, row):
+        return row["state"] + row[self.raw_geotype]
+
+
+class NonACSPlacesDownloader(NonACSBaseGeoTypeDownloader):
+    """
+    Download raw data at the place level.
+    """
+
+    slug = "places"
+    raw_geotype = "place"
+
+    def create_geoid(self, row):
+        return row["state"] + row[self.raw_geotype]
 
 
 class NonACSTractsDownloader(NonACSBaseStateLevelGeoTypeDownloader):
