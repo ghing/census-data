@@ -20,6 +20,7 @@ SHARED_DATA :=
 include etl/race.mk
 include etl/popest.mk
 include etl/boundaries.mk
+include etl/education.mk
 include etl/eeo.mk
 include etl/employment.mk
 include etl/language.mk

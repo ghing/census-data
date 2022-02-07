@@ -96,6 +96,139 @@ class HouseholdsGrandparentsLivingWithGrandchildren(BaseTableConfig):
 
 
 @register
+class SchoolEnrollmentDetailedLevel(BaseTableConfig):
+    """Table B14007: School Enrollment by Detailed Level of School"""
+
+    PROCESSED_TABLE_NAME = "school_enrollment_detailed"
+    UNIVERSE = "population 3 years and over"
+    RAW_TABLE_NAME = "B14007"
+    # See https://api.census.gov/data/2019/acs/acs5/groups/B14007.html
+    RAW_FIELD_CROSSWALK = collections.OrderedDict(
+        {
+            "001": "universe",
+            "002": "enrolled",
+            "003": "preschool",
+            "004": "kindergarten",
+            "005": "grade_1",
+            "006": "grade_2",
+            "007": "grade_3",
+            "008": "grade_4",
+            "009": "grade_5",
+            "010": "grade_6",
+            "011": "grade_7",
+            "012": "grade_8",
+            "013": "grade_9",
+            "014": "grade_10",
+            "015": "grade_11",
+            "016": "grade_12",
+            "017": "college_undergrad",
+            "018": "college_grad",
+            "019": "not_enrolled",
+        }
+    )
+
+
+@register
+class SchoolEnrollmentDetailedLevelWhite(SchoolEnrollmentDetailedLevel):
+    """Table B14007A: School Enrollment by Detailed Level of School (White alone)"""
+
+    PROCESSED_TABLE_NAME = "school_enrollment_detailed_white"
+    RAW_TABLE_NAME = "B14007A"
+
+
+@register
+class SchoolEnrollmentDetailedLevelBlack(SchoolEnrollmentDetailedLevel):
+    """
+    Table B14007B:
+    School Enrollment by Detailed Level of School (Black or African American Alone)
+
+    """
+
+    PROCESSED_TABLE_NAME = "school_enrollment_detailed_black"
+    RAW_TABLE_NAME = "B14007B"
+
+
+@register
+class SchoolEnrollmentDetailedLevelAmericanIndianAlaskaNative(
+    SchoolEnrollmentDetailedLevel
+):
+    """
+    Table B14007C:
+    School Enrollment by Detailed Level of School (American Indian and Alaska Native Alone)
+
+    """
+
+    PROCESSED_TABLE_NAME = (
+        "school_enrollment_detailed_american_indian_and_alaska_native"
+    )
+    RAW_TABLE_NAME = "B14007C"
+
+
+@register
+class SchoolEnrollmentDetailedLevelAsian(SchoolEnrollmentDetailedLevel):
+    """Table B14007D: School Enrollment by Detailed Level of School (Asian Alone)"""
+
+    PROCESSED_TABLE_NAME = "school_enrollment_detailed_asian"
+    RAW_TABLE_NAME = "B14007D"
+
+
+@register
+class SchoolEnrollmentDetailedLevelNativeHawaiianPacificIslander(
+    SchoolEnrollmentDetailedLevel
+):
+    """
+    Table B14007E:
+    School Enrollment by Detailed Level of School (Native Hawaiian and Other Pacific Islander Alone)
+
+    """
+
+    PROCESSED_TABLE_NAME = (
+        "school_enrollment_detailed_native_hawaiian_and_pacific_islander"
+    )
+    RAW_TABLE_NAME = "B14007E"
+
+
+@register
+class SchoolEnrollmentDetailedLevelOther(SchoolEnrollmentDetailedLevel):
+    """
+    Table B14007F:
+    School Enrollment by Detailed Level of School (Some Other Race Alone)
+
+    """
+
+    PROCESSED_TABLE_NAME = "school_enrollment_detailed_other"
+    RAW_TABLE_NAME = "B14007F"
+
+
+@register
+class SchoolEnrollmentDetailedLevelTwoOrMore(SchoolEnrollmentDetailedLevel):
+    """Table B14007G: School Enrollment by Detailed Level of School (Two or More Races)"""
+
+    PROCESSED_TABLE_NAME = "school_enrollment_detailed_two_or_more_races"
+    RAW_TABLE_NAME = "B14007G"
+
+
+@register
+class SchoolEnrollmentDetailedLevelWhiteNonHispanic(SchoolEnrollmentDetailedLevel):
+    """
+    Table B14007H:
+    School Enrollment by Detailed Level of School (White Alone, Not Hispanic or Latino)
+
+    """
+
+    PROCESSED_TABLE_NAME = "school_enrollment_detailed_white_nh"
+    RAW_TABLE_NAME = "B14007H"
+
+
+@register
+class SchoolEnrollmentDetailedLevelLatino(SchoolEnrollmentDetailedLevel):
+    """Table B14007I: School Enrollment by Detailed Level of School (Hispanic or Latino)"""
+
+    PROCESSED_TABLE_NAME = "school_enrollment_detailed_latino"
+    RAW_TABLE_NAME = "B14007I"
+
+
+@register
 class Occupation(BaseTableConfig):
     """Sex by Occupation for the Civilian Employed Population 16 Years and Over"""
 

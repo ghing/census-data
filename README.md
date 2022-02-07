@@ -154,6 +154,24 @@ Download Table B10063: Households With Grandparents Living With Own Grandchildre
 make data/processed/acs5_2019_grandparentslivingwithgrandchildren_zctas.csv
 ```
 
+Download Table B14007: School Enrollment by Detailed Level of School:
+
+```
+make data/processed/acs5_2019_school_enrollment_detailed_nationwide.csv
+make data/processed/acs5_2019_school_enrollment_detailed_states.csv
+make data/processed/acs5_2019_school_enrollment_detailed_counties.csv
+make data/processed/acs5_2019_school_enrollment_detailed_places.csv
+```
+
+There are also racial iterations of this table that can be downloaded. The racial slugs are `white`, `black`, `american_indian_and_alaska_native`, `asian`, `native_hawaiian_and_pacific_islander_nationwide`, `other`, `two_or_more_races`, `white_nh` and `latino`. For example, to download the iterated table for Black people:
+
+```
+make data/processed/acs5_2019_school_enrollment_detailed_black_nationwide.csv
+make data/processed/acs5_2019_school_enrollment_detailed_black_states.csv
+make data/processed/acs5_2019_school_enrollment_detailed_black_counties.csv
+make data/processed/acs5_2019_school_enrollment_detailed_black_places.csv
+```
+
 Download Table C24010: Sex by Occupation for the Civilian Population:
 
 ```
