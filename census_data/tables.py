@@ -19,6 +19,58 @@ import numpy as np
 
 from census_data.core.tables import NonACSBaseTableConfig
 
+# ACS Tables overridden from census-data-downloader
+#
+# In most cases, these classes need overridden because the list of available
+# years is out of date.
+
+
+@register
+class EmploymentStatus(EmploymentStatusDownloader):
+    """ "Table B23025: Employment Status"""
+
+    # HACK: Manually update the year list because the base package is out-of-date
+    YEAR_LIST = (2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011)
+
+
+@register
+class LanguageShortForm(LanguageShortFormDownloader):
+    """Table C16001: Language Spoken at Home"""
+
+    # HACK: Manually update the year list because the base package is out-of-date
+    YEAR_LIST = (
+        2019,
+        2018,
+        2017,
+        2016,
+    )
+
+
+@register
+class ClassOfWorker(ClassOfWorkerDownloader):
+    """Table C24080: Sex by Class of Worker for the Civilian Population"""
+
+    def process(self, df):  # pylint: disable=no-self-use
+        """Calculates totals for both genders together"""
+        groups = [
+            "private_for_profit_wage_and_salary",
+            "employee_of_private_company",
+            "selfemployed_in_own_incorporated_business",
+            "private_not_for_profit_wage_and_salary",
+            "local_government",
+            "state_government",
+            "federal_government",
+            "selfemployed_in_own_not_incorporated_business",
+            "unpaid_family_workers",
+        ]
+        for grp in groups:
+            df[f"total_{grp}"] = df[f"male_{grp}"] + df[f"female_{grp}"]
+
+        return df
+
+
+# ACS tables not supported by census-data-downloader
+
 
 @register
 class HouseholdsGrandparentsLivingWithGrandchildren(BaseTableConfig):
@@ -41,104 +93,6 @@ class HouseholdsGrandparentsLivingWithGrandchildren(BaseTableConfig):
             "007": "without_grandparents_living_with_grandchildren",
         }
     )
-
-
-@register
-class ResponseRate(NonACSBaseTableConfig):
-    """
-    Decennial Census Self-Response Rates
-
-
-    See https://www.census.gov/data/developers/data-sets/decennial-response-rates.2020.html
-    and https://www.census.gov/data/developers/data-sets/decennial-response-rates.2010.html
-
-    """
-
-    YEAR_LIST = [
-        2010,
-        2020,
-    ]
-    PROCESSED_TABLE_NAME = "responserate"
-    UNIVERSE = "households"  # This might actually be addresses
-    RAW_TABLE_NAME = "responserate"
-    RAW_FIELD_CROSSWALK_2020 = collections.OrderedDict(
-        {
-            "CAVG": "avg_cumulative",
-            "CINTAVG": "avg_cumulative_internet",
-            "CINTMAX": "max_cumulative_internet",
-            "CINTMED": "med_cumulative_internet",
-            "CINTMIN": "min_cumulative_internet",
-            "CMAX": "max_cumulative",
-            "CMED": "med_cumulative",
-            "CMIN": "min_cumulative",
-            "CRRALL": "cumulative",
-            "CRRINT": "internet",
-            "DAVG": "avg_daily",
-            "DINTAVG": "avg_daily_internet",
-            "DINTMAX": "max_daily_internet",
-            "DINTMED": "med_daily_internet",
-            "DINTMIN": "min_daily_internet",
-            "DMAX": "max_daily",
-            "DMED": "med_daily",
-            "DMIN": "min_daily",
-            "DRRALL": "daily",
-            "DRRINT": "daily_internet",
-            "RESP_DATE": "resp_date",
-        }
-    )
-    FIELD_TYPES_2020 = {
-        "CAVG": np.float64,
-        "CINTAVG": np.float64,
-        "CINTMAX": np.float64,
-        "CINTMED": np.float64,
-        "CINTMIN": np.float64,
-        "CMAX": np.float64,
-        "CMED": np.float64,
-        "CMIN": np.float64,
-        "CRRALL": np.float64,
-        "CRRINT": np.float64,
-        "DAVG": np.float64,
-        "DINTAVG": np.float64,
-        "DINTMAX": np.float64,
-        "DINTMED": np.float64,
-        "DINTMIN": np.float64,
-        "DMAX": np.float64,
-        "DMED": np.float64,
-        "DMIN": np.float64,
-        "DRRALL": np.float64,
-        "DRRINT": np.float64,
-    }
-
-    RAW_FIELD_CROSSWALK_2010 = collections.OrderedDict(
-        {
-            "FSRR2010": "cumulative",
-        }
-    )
-    FIELD_TYPES_2010 = {
-        "FSRR2010": np.float64,
-    }
-
-    def __init__(  # pylint:disable=too-many-arguments
-        self,
-        api_key=None,
-        source="responserate",
-        years=None,
-        data_dir=None,
-        force=False,
-    ):
-        super().__init__(api_key, source, years, data_dir, force)
-
-    def get_raw_field_crosswalk(self, year=None):
-        if year == 2010:
-            return self.RAW_FIELD_CROSSWALK_2010
-
-        return self.RAW_FIELD_CROSSWALK_2020
-
-    def get_field_types(self, year=None):
-        if year == 2010:
-            return self.FIELD_TYPES_2010
-
-        return self.FIELD_TYPES_2020
 
 
 @register
@@ -293,48 +247,105 @@ class Occupation(BaseTableConfig):
         return df
 
 
-@register
-class EmploymentStatus(EmploymentStatusDownloader):
-    """"Table B23025: Employment Status"""
-
-    # HACK: Manually update the year list because the base package is out-of-date
-    YEAR_LIST = (2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011)
+# Non-ACS tables
 
 
 @register
-class ClassOfWorker(ClassOfWorkerDownloader):
-    """Table C24080: Sex by Class of Worker for the Civilian Population"""
-
-    def process(self, df):  # pylint: disable=no-self-use
-        """Calculates totals for both genders together"""
-        groups = [
-            "private_for_profit_wage_and_salary",
-            "employee_of_private_company",
-            "selfemployed_in_own_incorporated_business",
-            "private_not_for_profit_wage_and_salary",
-            "local_government",
-            "state_government",
-            "federal_government",
-            "selfemployed_in_own_not_incorporated_business",
-            "unpaid_family_workers",
-        ]
-        for grp in groups:
-            df[f"total_{grp}"] = df[f"male_{grp}"] + df[f"female_{grp}"]
-
-        return df
+class ResponseRate(NonACSBaseTableConfig):
+    """
+    Decennial Census Self-Response Rates
 
 
-@register
-class LanguageShortForm(LanguageShortFormDownloader):
-    """Table C16001: Language Spoken at Home"""
+    See https://www.census.gov/data/developers/data-sets/decennial-response-rates.2020.html
+    and https://www.census.gov/data/developers/data-sets/decennial-response-rates.2010.html
 
-    # HACK: Manually update the year list because the base package is out-of-date
-    YEAR_LIST = (
-        2019,
-        2018,
-        2017,
-        2016,
+    """
+
+    YEAR_LIST = [
+        2010,
+        2020,
+    ]
+    PROCESSED_TABLE_NAME = "responserate"
+    UNIVERSE = "households"  # This might actually be addresses
+    RAW_TABLE_NAME = "responserate"
+    RAW_FIELD_CROSSWALK_2020 = collections.OrderedDict(
+        {
+            "CAVG": "avg_cumulative",
+            "CINTAVG": "avg_cumulative_internet",
+            "CINTMAX": "max_cumulative_internet",
+            "CINTMED": "med_cumulative_internet",
+            "CINTMIN": "min_cumulative_internet",
+            "CMAX": "max_cumulative",
+            "CMED": "med_cumulative",
+            "CMIN": "min_cumulative",
+            "CRRALL": "cumulative",
+            "CRRINT": "internet",
+            "DAVG": "avg_daily",
+            "DINTAVG": "avg_daily_internet",
+            "DINTMAX": "max_daily_internet",
+            "DINTMED": "med_daily_internet",
+            "DINTMIN": "min_daily_internet",
+            "DMAX": "max_daily",
+            "DMED": "med_daily",
+            "DMIN": "min_daily",
+            "DRRALL": "daily",
+            "DRRINT": "daily_internet",
+            "RESP_DATE": "resp_date",
+        }
     )
+    FIELD_TYPES_2020 = {
+        "CAVG": np.float64,
+        "CINTAVG": np.float64,
+        "CINTMAX": np.float64,
+        "CINTMED": np.float64,
+        "CINTMIN": np.float64,
+        "CMAX": np.float64,
+        "CMED": np.float64,
+        "CMIN": np.float64,
+        "CRRALL": np.float64,
+        "CRRINT": np.float64,
+        "DAVG": np.float64,
+        "DINTAVG": np.float64,
+        "DINTMAX": np.float64,
+        "DINTMED": np.float64,
+        "DINTMIN": np.float64,
+        "DMAX": np.float64,
+        "DMED": np.float64,
+        "DMIN": np.float64,
+        "DRRALL": np.float64,
+        "DRRINT": np.float64,
+    }
+
+    RAW_FIELD_CROSSWALK_2010 = collections.OrderedDict(
+        {
+            "FSRR2010": "cumulative",
+        }
+    )
+    FIELD_TYPES_2010 = {
+        "FSRR2010": np.float64,
+    }
+
+    def __init__(  # pylint:disable=too-many-arguments
+        self,
+        api_key=None,
+        source="responserate",
+        years=None,
+        data_dir=None,
+        force=False,
+    ):
+        super().__init__(api_key, source, years, data_dir, force)
+
+    def get_raw_field_crosswalk(self, year=None):
+        if year == 2010:
+            return self.RAW_FIELD_CROSSWALK_2010
+
+        return self.RAW_FIELD_CROSSWALK_2020
+
+    def get_field_types(self, year=None):
+        if year == 2010:
+            return self.FIELD_TYPES_2010
+
+        return self.FIELD_TYPES_2020
 
 
 @register
