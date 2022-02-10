@@ -193,7 +193,7 @@ Download Table B16001: Language Spoken at Home by Ability to Speak English
 Note that this is only available at the tract level for 2015 (and possibly before).
 
 ```
-make data/processed/acs5_2015_languagelongform_tracts.csv 
+make data/processed/acs5_2015_languagelongform2015_tracts.csv 
 ```
 
 Download Table C16001: Language Spoken at Home
