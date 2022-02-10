@@ -14,7 +14,10 @@ from census_data_downloader.core.tables import BaseTableConfig
 from census_data_downloader.core.decorators import register
 from census_data_downloader.tables.classofworker import ClassOfWorkerDownloader
 from census_data_downloader.tables.employmentstatus import EmploymentStatusDownloader
-from census_data_downloader.tables.language import LanguageShortFormDownloader
+from census_data_downloader.tables.language import (
+    LanguageLongFormDownloader,
+    LanguageShortFormDownloader,
+)
 import numpy as np
 
 from census_data.core.tables import NonACSBaseTableConfig
@@ -44,6 +47,267 @@ class LanguageShortForm(LanguageShortFormDownloader):
         2017,
         2016,
     )
+
+
+@register
+class LanguageLongForm2015(LanguageLongFormDownloader):
+    """Table B16001: Language Spoken at Home by Ability to Speak English"""
+
+    YEAR_LIST = (2015,)
+    # HACK: Tract-level data is only available for 2015 and prior.
+    # I don't know how to limit this for certain combinations of geotypes and years
+    GEOTYPE_LIST = (
+        "nationwide",
+        "states",
+        "counties",
+        "congressional_districts",
+        "places",
+        "tracts",
+    )
+    PROCESSED_TABLE_NAME = "languagelongform2015"
+    # The 2015 (and possibly prior) versions of this table have somewhat
+    # different variables than 2016 onward.
+    # See https://api.census.gov/data/2015/acs/acs5/groups/B16001.html
+    RAW_FIELD_CROSSWALK = collections.OrderedDict(
+        {
+            "001": "universe",
+            "002": "only_english",
+            "003": "total_spanish",
+            "004": "spanish_and_english_very_well",
+            "005": "spanish_and_english_less_than_very_well",
+            "006": "total_french",
+            "007": "french_and_english_very_well",
+            "008": "french_and_english_less_than_very_well",
+            "009": "total_french_creole",
+            "010": "french_creole_and_english_very_well",
+            "011": "french_creole_and_english_less_than_very_well",
+            "012": "total_italian",
+            "013": "italian_and_english_very_well",
+            "014": "italian_and_english_less_than_very_well",
+            "015": "total_portuguese",
+            "016": "portuguese_and_english_very_well",
+            "017": "portuguese_and_english_less_than_very_well",
+            "018": "total_german",
+            "019": "german_and_english_very_well",
+            "020": "german_and_english_less_than_very_well",
+            "021": "total_yiddish",
+            "022": "yiddish_and_english_very_well",
+            "023": "yiddish_and_english_less_than_very_well",
+            "024": "total_other_germanic",
+            "025": "other_germanic_and_english_very_well",
+            "026": "other_germanic_and_english_less_than_very_well",
+            "027": "total_scandinavian",
+            "028": "scandinavian_and_english_very_well",
+            "029": "scandinavian_and_english_less_than_very_well",
+            "030": "total_greek",
+            "031": "greek_and_english_very_well",
+            "032": "greek_and_english_less_than_very_well",
+            "033": "total_russian",
+            "034": "russian_and_english_very_well",
+            "035": "russian_and_english_less_than_very_well",
+            "036": "total_polish",
+            "037": "polish_and_english_very_well",
+            "038": "polish_and_english_less_than_very_well",
+            "039": "total_serbo_croatian",
+            "040": "serbo_croatian_and_english_very_well",
+            "041": "serbo_croatian_and_english_less_than_very_well",
+            "042": "total_other_slavic",
+            "043": "other_slavic_and_english_very_well",
+            "044": "other_slavic_and_english_less_than_very_well",
+            "045": "total_armenian",
+            "046": "armenian_and_english_very_well",
+            "047": "armenian_and_english_less_than_very_well",
+            "048": "total_persian",
+            "049": "persian_and_english_very_well",
+            "050": "persian_and_english_less_than_very_well",
+            "051": "total_gujarati",
+            "052": "gujarati_and_english_very_well",
+            "053": "gujarati_and_english_less_than_very_well",
+            "054": "total_hindi",
+            "055": "hindi_and_english_very_well",
+            "056": "hindi_and_english_less_than_very_well",
+            "057": "total_urdu",
+            "058": "urdu_and_english_very_well",
+            "059": "urdu_and_english_less_than_very_well",
+            "060": "total_other_indic",
+            "061": "other_indic_and_english_very_well",
+            "062": "other_indic_and_english_less_than_very_well",
+            "063": "total_other_indoeuropean",
+            "064": "other_indoeuropean_and_english_very_well",
+            "065": "other_indoeuropean_and_english_less_than_very_well",
+            "066": "total_chinese",
+            "067": "chinese_and_english_very_well",
+            "068": "chinese_and_english_less_than_very_well",
+            "069": "total_japanese",
+            "070": "japanese_and_english_very_well",
+            "071": "japanese_and_english_less_than_very_well",
+            "072": "total_korean",
+            "073": "korean_and_english_very_well",
+            "074": "korean_and_english_less_than_very_well",
+            "075": "total_mon_khmer_cambodian",
+            "076": "mon_khmer_cambodian_and_english_very_well",
+            "077": "mon_khmer_cambodian_and_english_less_than_very_well",
+            "078": "total_hmong",
+            "079": "hmong_and_english_very_well",
+            "080": "hmong_and_english_less_than_very_well",
+            "081": "total_thai",
+            "082": "thai_and_english_very_well",
+            "083": "thai_and_english_less_than_very_well",
+            "084": "total_laotian",
+            "085": "laotian_and_english_very_well",
+            "086": "laotian_and_english_less_than_very_well",
+            "087": "total_vietnamese",
+            "088": "vietnamese_and_english_very_well",
+            "089": "vietnamese_and_english_less_than_very_well",
+            "090": "total_other_asia",
+            "091": "other_asia_and_english_very_well",
+            "092": "other_asia_and_english_less_than_very_well",
+            "093": "total_tagalog",
+            "094": "tagalog_and_english_very_well",
+            "095": "tagalog_and_english_less_than_very_well",
+            "096": "total_other_pacific_island",
+            "097": "other_pacific_island_and_english_very_well",
+            "098": "other_pacific_island_and_english_less_than_very_well",
+            "099": "total_navajo",
+            "100": "navajo_and_english_very_well",
+            "101": "navajo_and_english_less_than_very_well",
+            "102": "total_other_native_north_american",
+            "103": "other_native_north_american_and_english_very_well",
+            "104": "other_native_north_american_and_english_less_than_very_well",
+            "105": "total_hungarian",
+            "106": "hungarian_and_english_very_well",
+            "107": "hungarian_and_english_less_than_very_well",
+            "108": "total_arabic",
+            "109": "arabic_and_english_very_well",
+            "110": "arabic_and_english_less_than_very_well",
+            "111": "total_hebrew",
+            "112": "hebrew_and_english_very_well",
+            "113": "hebrew_and_english_less_than_very_well",
+            "114": "total_african",
+            "115": "african_and_english_very_well",
+            "116": "african_and_english_less_than_very_well",
+            "117": "total_other_unspecified",
+            "118": "other_unspecified_and_english_very_well",
+            "119": "other_unspecified_and_english_less_than_very_well",
+        }
+    )
+
+    def process(self, df):
+        """
+        Combine language counts to get total english/non-english speakers
+        """
+        languages = [
+            "spanish",
+            "french",
+            "french_creole",
+            "italian",
+            "portuguese",
+            "german",
+            "yiddish",
+            "other_germanic",
+            "scandinavian",
+            "greek",
+            "russian",
+            "polish",
+            "serbo_croatian",
+            "other_slavic",
+            "armenian",
+            "persian",
+            "gujarati",
+            "hindi",
+            "urdu",
+            "other_indic",
+            "other_indoeuropean",
+            "chinese",
+            "japanese",
+            "korean",
+            "mon_khmer_cambodian",
+            "hmong",
+            "thai",
+            "laotian",
+            "vietnamese",
+            "other_asia",
+            "tagalog",
+            "other_pacific_island",
+            "navajo",
+            "other_native_north_american",
+            "hungarian",
+            "arabic",
+            "hebrew",
+            "african",
+            "other_unspecified",
+        ]
+
+        # English vs. no English totals
+        df["total_english"] = df["only_english"] + df[
+            [f"{l}_and_english_very_well" for l in languages]
+        ].sum(axis=1)
+        df["total_english_less_than_very_well"] = df[
+            [f"{l}_and_english_less_than_very_well" for l in languages]
+        ].sum(axis=1)
+
+        # Group into the four language groups defined by the Census
+        # https://www.census.gov/topics/population/language-use/about.html
+        # Calculate our custom groups (other than Spanish, which we already have)
+        groupsets = collections.OrderedDict(
+            {
+                "other_indo_european_group": [
+                    "french",
+                    "french_creole",
+                    "italian",
+                    "portuguese",
+                    "german",
+                    "yiddish",
+                    "other_germanic",
+                    "scandinavian",
+                    "greek",
+                    "russian",
+                    "polish",
+                    "serbo_croatian",
+                    "other_slavic",
+                    "armenian",
+                    "persian",
+                    "gujarati",
+                    "hindi",
+                    "urdu",
+                    "other_indic",
+                    "other_indoeuropean",
+                    "hungarian",
+                ],
+                "asian_and_pacific_island_group": [
+                    "chinese",
+                    "japanese",
+                    "korean",
+                    "mon_khmer_cambodian",
+                    "hmong",
+                    "thai",
+                    "laotian",
+                    "vietnamese",
+                    "other_asia",
+                    "tagalog",
+                    "other_pacific_island",
+                ],
+                "all_other_group": [
+                    "navajo",
+                    "other_native_north_american",
+                    "arabic",
+                    "hebrew",
+                    "african",
+                    "other_unspecified",
+                ],
+            }
+        )
+        for groupset, group_list in groupsets.items():
+            df[f"total_{groupset}"] = df[[f"total_{f}" for f in group_list]].sum(axis=1)
+            df[f"{groupset}_and_english_very_well"] = df[
+                [f"{f}_and_english_very_well" for f in group_list]
+            ].sum(axis=1)
+            df[f"{groupset}_and_english_less_than_very_well"] = df[
+                [f"{f}_and_english_less_than_very_well" for f in group_list]
+            ].sum(axis=1)
+
+        # Pass it back
+        return df
 
 
 @register
