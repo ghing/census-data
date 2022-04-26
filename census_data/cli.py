@@ -136,6 +136,9 @@ def download_pep_cmd(table, geotype, data_dir="./", year=None, force=False):
     elif geotype == "states":
         raw_geotype = "state"
 
+    elif geotype == "places":
+        raw_geotype = "place"
+
     else:
         # TODO: Support other geographies.
         raise click.ClickException(f"geotype '{geotype}' is not supported")

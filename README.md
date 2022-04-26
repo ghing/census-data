@@ -277,6 +277,12 @@ make data/processed/tracts_2010.geojson
 
 ### Population estimates
 
+Download place population estimates:
+
+```
+make data/processed/pep_2019_population_places.csv
+```
+
 Download county population estimates:
 
 ```
