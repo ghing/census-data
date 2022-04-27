@@ -10,7 +10,7 @@ import collections
 import logging
 import time
 
-from census_data_downloader.core.geotypes import BaseGeoTypeDownloader
+from census_data_downloader.core import geotypes
 import numpy as np
 import pandas as pd
 from us import states
@@ -21,7 +21,7 @@ from census_data.core import AugmentedCensus
 logger = logging.getLogger(__name__)
 
 
-class BlockGroupsDownloader(BaseGeoTypeDownloader):
+class BlockGroupsDownloader(geotypes.BaseGeoTypeDownloader):
     """
     Download raw data at the block group level
     """
@@ -211,7 +211,7 @@ class BlockGroupsDownloader(BaseGeoTypeDownloader):
         return self.processed_csv_path
 
 
-class NonACSBaseGeoTypeDownloader(BaseGeoTypeDownloader):
+class NonACSBaseGeoTypeDownloader(geotypes.BaseGeoTypeDownloader):
     """
     Base class for downloading raw data from the Census API for non-ACS enpoints.
 
@@ -222,7 +222,7 @@ class NonACSBaseGeoTypeDownloader(BaseGeoTypeDownloader):
     # pylint: disable=too-many-instance-attributes
     YEAR_LIST = [
         2020,
-    ] + BaseGeoTypeDownloader.YEAR_LIST
+    ] + geotypes.BaseGeoTypeDownloader.YEAR_LIST
 
     slug = "nationwide"
     raw_geotype = "us"
@@ -461,3 +461,11 @@ class NonACSTractsDownloader(NonACSBaseStateLevelGeoTypeDownloader):
 
 
 # TODO: Implement other non-ACS downloader classes
+
+# HACK: Implement a class that supports 2020 because the base package is out of date
+class TractsDownloader2020(geotypes.TractsDownloader):
+    """Version of TractsDownloader that supports 2020"""
+
+    YEAR_LIST = [
+        2020,
+    ] + geotypes.TractsDownloader.YEAR_LIST

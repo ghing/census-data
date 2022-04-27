@@ -199,6 +199,7 @@ make data/processed/acs5_2015_languagelongform2015_tracts.csv
 Download Table C16001: Language Spoken at Home
 
 ```
+make data/processed/acs5_2020_languageshortform_tracts.csv
 make data/processed/acs5_2019_languageshortform_tracts.csv
 ```
 

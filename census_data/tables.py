@@ -11,7 +11,7 @@ https://github.com/datadesk/census-data-downloader/tree/master/census_data_downl
 import collections
 
 from census_data_downloader.core.tables import BaseTableConfig
-from census_data_downloader.core.decorators import register
+from census_data_downloader.core.decorators import downloader, register
 from census_data_downloader.tables.classofworker import ClassOfWorkerDownloader
 from census_data_downloader.tables.employmentstatus import EmploymentStatusDownloader
 from census_data_downloader.tables.language import (
@@ -20,6 +20,7 @@ from census_data_downloader.tables.language import (
 )
 import numpy as np
 
+from census_data.core.geotypes import TractsDownloader2020
 from census_data.core.tables import NonACSBaseTableConfig
 
 # ACS Tables overridden from census-data-downloader
@@ -42,11 +43,20 @@ class LanguageShortForm(LanguageShortFormDownloader):
 
     # HACK: Manually update the year list because the base package is out-of-date
     YEAR_LIST = (
+        2020,
         2019,
         2018,
         2017,
         2016,
     )
+
+    # HACK: Use a class that supports 2020 because the base package is out-of-date
+    @downloader
+    def download_tracts(self):
+        """
+        Download data for all Census tracts in the provided state.
+        """
+        return TractsDownloader2020
 
 
 @register
