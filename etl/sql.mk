@@ -19,6 +19,7 @@ TABLE_PROXY_DIR := $(DATA_DIR_PROCESSED)/db_tables
 include etl/boundaries_sql.mk
 include etl/employment_sql.mk
 include etl/language_sql.mk
+include etl/gazetteer_sql.mk
 include etl/popest_sql.mk
 include etl/race_sql.mk
 include etl/redistricting_sql.mk
