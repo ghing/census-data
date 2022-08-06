@@ -4,7 +4,7 @@
 # ("2019_"), so that the table name begins with a letter, so that the table name
 # does not need to be quoted when used in a SQL query.
 
-$(TABLE_PROXY_DIR)/gaz_2019_place_national: $(DATA_DIR_SRC)/2019_Gaz_place_national.txt | $(TABLE_PROXY_DIR)
+$(TABLE_PROXY_DIR)/gaz_2019_place_national: $(DATA_DIR_SRC)/2019_Gazetteer/2019_Gaz_place_national.txt | $(TABLE_PROXY_DIR)
 	@# Gazetteer files have trailing whitespace at the end of each line
 	@# which results in the colum name 'INTPTLONG                  '.
 	pipenv run bash -c ' \
