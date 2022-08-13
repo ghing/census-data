@@ -1,6 +1,6 @@
 # Table B03002: Hispanic or Latino Origin by Race, tracts
 $(TABLE_PROXY_DIR)/acs5_2019_race_tracts: $(DATA_DIR_PROCESSED)/acs5_2019_race_tracts.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	  --type geoid text \
 	  --type name text \
@@ -51,7 +51,7 @@ $(TABLE_PROXY_DIR)/acs5_2019_race_tracts: $(DATA_DIR_PROCESSED)/acs5_2019_race_t
 
 # Table B03002: Hispanic or Latino Origin by Race, zctas
 $(TABLE_PROXY_DIR)/acs5_2019_race_zctas: $(DATA_DIR_PROCESSED)/acs5_2019_race_zctas.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	  --type geoid text \
 	  --type name text \

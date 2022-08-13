@@ -1,7 +1,7 @@
 # Load self-response rates
 
 $(TABLE_PROXY_DIR)/responserate_2020_responserate_tracts: $(DATA_DIR_PROCESSED)/responserate_2020_responserate_tracts.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	  --type avg_cumulative float \
 	  --type avg_cumulative_internet float \
@@ -26,7 +26,7 @@ $(TABLE_PROXY_DIR)/responserate_2020_responserate_tracts: $(DATA_DIR_PROCESSED)/
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
 $(TABLE_PROXY_DIR)/responserate_2010_responserate_tracts: $(DATA_DIR_PROCESSED)/responserate_2010_responserate_tracts.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	  --type cumulative float \
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@

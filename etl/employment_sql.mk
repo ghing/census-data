@@ -1,7 +1,7 @@
 # Load ACS tables related to employment into a SQL database
 
 $(TABLE_PROXY_DIR)/acs5_2019_occupation_places: $(DATA_DIR_PROCESSED)/acs5_2019_occupation_places.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	--type geoid text \
 	--type name text \
@@ -338,7 +338,7 @@ $(TABLE_PROXY_DIR)/acs5_2019_occupation_places: $(DATA_DIR_PROCESSED)/acs5_2019_
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
 $(TABLE_PROXY_DIR)/acs5_2019_occupation_counties: $(DATA_DIR_PROCESSED)/acs5_2019_occupation_counties.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	--type geoid text \
 	--type name text \
@@ -675,7 +675,7 @@ $(TABLE_PROXY_DIR)/acs5_2019_occupation_counties: $(DATA_DIR_PROCESSED)/acs5_201
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
 $(TABLE_PROXY_DIR)/acs5_2019_occupation_states: $(DATA_DIR_PROCESSED)/acs5_2019_occupation_states.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	--type geoid text \
 	--type name text \
@@ -1012,7 +1012,7 @@ $(TABLE_PROXY_DIR)/acs5_2019_occupation_states: $(DATA_DIR_PROCESSED)/acs5_2019_
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
 $(TABLE_PROXY_DIR)/acs5_2019_employmentstatus_places: $(DATA_DIR_PROCESSED)/acs5_2019_employmentstatus_places.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	--type geoid text \
 	--type name text \
@@ -1049,7 +1049,7 @@ $(TABLE_PROXY_DIR)/acs5_2019_employmentstatus_places: $(DATA_DIR_PROCESSED)/acs5
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
 $(TABLE_PROXY_DIR)/acs5_2019_employmentstatus_counties: $(DATA_DIR_PROCESSED)/acs5_2019_employmentstatus_counties.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	--type geoid text \
 	--type name text \
@@ -1086,7 +1086,7 @@ $(TABLE_PROXY_DIR)/acs5_2019_employmentstatus_counties: $(DATA_DIR_PROCESSED)/ac
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
 $(TABLE_PROXY_DIR)/acs5_2019_employmentstatus_states: $(DATA_DIR_PROCESSED)/acs5_2019_employmentstatus_states.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	--type geoid text \
 	--type name text \
@@ -1123,7 +1123,7 @@ $(TABLE_PROXY_DIR)/acs5_2019_employmentstatus_states: $(DATA_DIR_PROCESSED)/acs5
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
 $(TABLE_PROXY_DIR)/acs5_2019_classofworker_places: $(DATA_DIR_PROCESSED)/acs5_2019_classofworker_places.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	--type geoid text \
 	--type name text \
@@ -1226,7 +1226,7 @@ $(TABLE_PROXY_DIR)/acs5_2019_classofworker_places: $(DATA_DIR_PROCESSED)/acs5_20
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
 $(TABLE_PROXY_DIR)/acs5_2019_classofworker_counties: $(DATA_DIR_PROCESSED)/acs5_2019_classofworker_counties.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	--type geoid text \
 	--type name text \
@@ -1329,7 +1329,7 @@ $(TABLE_PROXY_DIR)/acs5_2019_classofworker_counties: $(DATA_DIR_PROCESSED)/acs5_
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
 $(TABLE_PROXY_DIR)/acs5_2019_classofworker_states: $(DATA_DIR_PROCESSED)/acs5_2019_classofworker_states.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	--type geoid text \
 	--type name text \

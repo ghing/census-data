@@ -6,7 +6,7 @@
 # TODO: Figure out what to do about the slug being different, i.e.
 # `languagelongform2015` instead of `languagelongform`.
 $(TABLE_PROXY_DIR)/acs5_2015_languagelongform2015_tracts: $(DATA_DIR_PROCESSED)/acs5_2015_languagelongform2015_tracts.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	  --type geoid text \
 	  --type name text \
@@ -506,7 +506,7 @@ $(TABLE_PROXY_DIR)/acs5_2015_languagelongform2015_tracts: $(DATA_DIR_PROCESSED)/
 
 # Table C16001: Language Spoken at Home, tracts 
 $(TABLE_PROXY_DIR)/acs5_2020_languageshortform_tracts: $(DATA_DIR_PROCESSED)/acs5_2020_languageshortform_tracts.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	  --type geoid text \
 	  --type name text \
@@ -671,7 +671,7 @@ $(TABLE_PROXY_DIR)/acs5_2020_languageshortform_tracts: $(DATA_DIR_PROCESSED)/acs
 	&& sqlite3 -csv $(SQLITE_DB_PATH) "SELECT COUNT(*) FROM $(basename $(notdir $<));" > $@
 
 $(TABLE_PROXY_DIR)/acs5_2019_languageshortform_tracts: $(DATA_DIR_PROCESSED)/acs5_2019_languageshortform_tracts.csv | $(TABLE_PROXY_DIR)
-	pipenv run sqlite-utils insert --csv --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
+	pipenv run sqlite-utils insert --csv --truncate --pk geoid $(SQLITE_DB_PATH) $(basename $(notdir $<)) $< \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $(basename $(notdir $<)) \
 	  --type geoid text \
 	  --type name text \

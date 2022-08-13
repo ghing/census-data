@@ -17,7 +17,7 @@ $(TABLE_PROXY_DIR)/gaz_$1_$2: $(DATA_DIR_SRC)/$1_Gaz_$2.txt | $(TABLE_PROXY_DIR)
 	@# which results in the colum name 'INTPTLONG                  '.
 	pipenv run bash -c ' \
 	    ./etl/trim_trailing_tsv_whitespace.py $$< | \
-	    sqlite-utils insert --tsv \
+	    sqlite-utils insert --tsv --truncate \
 	        --pk GEOID $(SQLITE_DB_PATH) $$(basename $$(notdir $$@)) -' \
 	&& pipenv run sqlite-utils transform $(SQLITE_DB_PATH) $$(basename $$(notdir $$@)) \
 	  --type USPS text \
