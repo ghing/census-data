@@ -233,7 +233,7 @@ def create_sqlite_load_cmd(input_csv, database_path, table_name=None):
         [f"  --type {c} {get_column_type(c)} \\" for c in data.columns]
     )
     load_cmd = (
-        f"sqlite-utils insert --csv --pk geoid {database_path} {table_name} {input_csv.name} \\\n"
+        f"sqlite-utils insert --csv --truncate --pk geoid {database_path} {table_name} {input_csv.name} \\\n"
         f"&& sqlite-utils transform {database_path} {table_name} \\\n"
         f"{type_options}"
     )
