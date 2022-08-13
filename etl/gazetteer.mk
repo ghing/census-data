@@ -13,10 +13,15 @@ define GAZETTEER_DATASET_RULES
 # Files are touched after unzipping to freshen their dates, so that they are newer than the source .zip file.
 # `unzip` sets the file timestamp to match the time within the zip file. This would result in the `unzip` recipe
 # running every time (due to its .zip dependency being out of date).
+#
+# Generates a rule like:
+#     $(DATA_DIR_SRC)/2019_Gaz_counties_national.txt:
 $(DATA_DIR_SRC)/$(1)_Gaz_$(2).txt: $(DATA_DIR_SRC)/$(1)_Gaz_$(2).zip
 	unzip -o $$< $$(notdir $$@) -d $$(dir $$@)
 	touch --no-create $$@
 
+# Generates a rule like:
+#     $(DATA_DIR_SRC)/2019_Gaz_counties_national.zip:
 $(DATA_DIR_SRC)/$(1)_Gaz_$(2).zip: | $(DATA_DIR_SRC)
 	wget -O $$(@) https://www2.census.gov/geo/docs/maps-data/data/gazetteer/$1_Gazetteer/$1_Gaz_$2.zip
 endef
