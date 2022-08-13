@@ -13,8 +13,6 @@ define GAZETTEER_LOAD_DATA_RULE
 #   - $1 = Year
 #   - $2 = Area Type
 $(TABLE_PROXY_DIR)/gaz_$1_$2: $(DATA_DIR_SRC)/$1_Gaz_$2.txt | $(TABLE_PROXY_DIR)
-	@echo "$$@"
-	@echo "$$^"
 	@# Gazetteer files have trailing whitespace at the end of each line
 	@# which results in the colum name 'INTPTLONG                  '.
 	pipenv run bash -c ' \
